@@ -14,6 +14,31 @@ resource "aws_s3_bucket_public_access_block" "ct-bucket-acl" {
   restrict_public_buckets = true
 }
 
+# resource "aws_s3_bucket_versioning" "version-ct-bucket" {
+#   bucket = aws_s3_bucket.ct-bucket.id
+#   versioning_configuration {
+#     status     = "Enabled"
+#     mfa_delete = "Enabled"
+#   }
+# }
+
+resource "aws_kms_key" "s3key" {
+  description             = "This key is used to encrypt bucket objects"
+  deletion_window_in_days = 10
+  enable_key_rotation     = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt-ct-bucket" {
+  bucket = aws_s3_bucket.ct-bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.s3key.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
 # CloudTrail bucket policy
 resource "aws_s3_bucket_policy" "ct-bucket-policy" {
   bucket = aws_s3_bucket.ct-bucket.id
@@ -63,6 +88,17 @@ resource "aws_s3_bucket_public_access_block" "config-bucket-acl" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt-config-bucket" {
+  bucket = aws_s3_bucket.config-bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.s3key.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
 }
 
 # Config bucket policy

@@ -18,7 +18,7 @@ For Terraform 0.13 or later use any version from `v4.48.0` of hashicorp/aws modu
 
 ## Authors
 
-Repo managed by [Jeremy Redmond](https://github.com/jsredmond).
+Repository managed by [Jeremy Redmond](https://github.com/jsredmond).
 
 ## License
 

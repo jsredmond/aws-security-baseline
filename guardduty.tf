@@ -1,5 +1,5 @@
 # Enable GuardDuty
-resource "aws_guardduty_detector" "my-detector" {
+resource "aws_guardduty_detector" "detector" {
   enable = true
 
   datasources {

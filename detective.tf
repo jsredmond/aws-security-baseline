@@ -1,6 +1,6 @@
 # Enable AWS Detective
-resource "aws_detective_graph" "my-detective" {
+resource "aws_detective_graph" "detective" {
   tags = {
-    Name = "${var.prefix_name}-detective"
+    Name = "${var.env}_detective"
   }
 }

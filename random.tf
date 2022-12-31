@@ -1,4 +1,4 @@
 # Used to create random numbers
-resource "random_id" "my-random-id" {
+resource "random_id" "random" {
   byte_length = 8
 }

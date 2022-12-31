@@ -1,2 +1,2 @@
 # Enable Security Hub
-resource "aws_securityhub_account" "my-security-hub" {}
+resource "aws_securityhub_account" "security_hub" {}

@@ -298,10 +298,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt_cloudtrai
   }
 }
 
-# # resource "aws_s3_bucket_versioning" "version-ct-bucket" {
-# #   bucket = aws_s3_bucket.ct-bucket.id
-# #   versioning_configuration {
-# #     status     = "Enabled"
-# #     mfa_delete = "Enabled"
-# #   }
-# # }
+resource "aws_s3_bucket_versioning" "version_cloudtrail_bucket" {
+  bucket = aws_s3_bucket.logs_bucket.id
+  versioning_configuration {
+    status     = "Enabled"
+  }
+}

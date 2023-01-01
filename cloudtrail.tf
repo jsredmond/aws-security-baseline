@@ -41,6 +41,75 @@ resource "aws_kms_key" "cloudtrail_log_key" {
 EOF
 }
 
+data "aws_iam_policy_document" "cloudtrail_kms" {
+  statement {
+    actions = [
+      "kms:*",
+    ]
+    principals {
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+      ]
+      type = "AWS"
+    }
+    resources = [
+      "*",
+    ]
+    sid = "Enable IAM User Permissions"
+  }
+
+  statement {
+    actions = [
+      "kms:GenerateDataKey*",
+    ]
+    condition {
+      test = "StringLike"
+      values = [
+        "arn:aws:cloudtrail:*:${data.aws_caller_identity.current.account_id}:trail/*",
+      ]
+      variable = "kms:EncryptionContext:aws:cloudtrail:arn"
+    }
+    principals {
+      identifiers = [
+        "cloudtrail.amazonaws.com",
+      ]
+      type = "Service"
+    }
+    resources = [
+      "*",
+    ]
+    sid = "Allow CloudTrail to encrypt logs"
+  }
+
+  statement {
+    actions = [
+      "kms:DescribeKey",
+    ]
+    principals {
+      identifiers = [
+        "cloudtrail.amazonaws.com",
+      ]
+      type = "Service"
+    }
+    resources = [
+      "*",
+    ]
+    sid = "Allow CloudTrail to describe key"
+  }
+}
+
+resource "aws_kms_key" "cloudtrail_kms_key" {
+  description         = "cloudtrail log key"
+  enable_key_rotation = true
+  deletion_window_in_days = 7
+  policy              = data.aws_iam_policy_document.cloudtrail_kms.json
+}
+
+# resource "aws_kms_alias" "cloudtrail" {
+#   name          = "alias/${local.associated_resource_name}"
+#   target_key_id = aws_kms_key.cloudtrail.key_id
+# }
+
 resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
   name = "${var.env}_cloudwatch_log_group"
   retention_in_days = 30
@@ -184,6 +253,7 @@ resource "aws_cloudtrail" "cloudtrail" {
   s3_bucket_name = aws_s3_bucket.logs_bucket.id
   is_multi_region_trail = true
   enable_log_file_validation = true
+  kms_key_id = aws_kms_key.cloudtrail_kms_key.arn
 
   event_selector {
     read_write_type           = "All"

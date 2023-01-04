@@ -1,8 +1,10 @@
+# Data call to get current AWS account and region
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+# CloudTrail bucket name local
 locals {
-  logs_bucket_name = "${var.env}-cloudtrail-${random_id.random.dec}"
+  cloudtrail_bucket_name = "${var.env}-cloudtrail-${random_id.random.dec}"
 }
 
 # KMS key to encrypt CloudWatch log group
@@ -41,6 +43,7 @@ resource "aws_kms_key" "cloudtrail_log_key" {
 EOF
 }
 
+# CloudTrail KMS Policy
 data "aws_iam_policy_document" "cloudtrail_kms" {
   statement {
     actions = [
@@ -98,6 +101,7 @@ data "aws_iam_policy_document" "cloudtrail_kms" {
   }
 }
 
+# CloudTrail KMS Key
 resource "aws_kms_key" "cloudtrail_kms_key" {
   description         = "cloudtrail log key"
   enable_key_rotation = true
@@ -105,11 +109,7 @@ resource "aws_kms_key" "cloudtrail_kms_key" {
   policy              = data.aws_iam_policy_document.cloudtrail_kms.json
 }
 
-# resource "aws_kms_alias" "cloudtrail" {
-#   name          = "alias/${local.associated_resource_name}"
-#   target_key_id = aws_kms_key.cloudtrail.key_id
-# }
-
+# CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
   name = "${var.env}_cloudwatch_log_group"
   retention_in_days = 30
@@ -122,14 +122,16 @@ resource "aws_cloudwatch_log_group" "cloudwatch_log_group" {
 
 }
 
+# CloudWatch Log Stream
 resource "aws_cloudwatch_log_stream" "cloudwatch_log_stream" {
   name           = "${data.aws_caller_identity.current.account_id}_CloudTrail_${data.aws_region.current.name}"
   log_group_name = aws_cloudwatch_log_group.cloudwatch_log_group.name
 }
 
+# CloudTrail logging into CloudWatch
 resource "aws_iam_policy" "cloudtrail_cloudwatch_policy" {
   name        = "${var.env}_cloudtrail_cloudwatch_policy"
-  description = "Policy to enable ClodTrail logging into CloudWatch on ${var.env}"
+  description = "Policy to enable CloudTrail logging into CloudWatch on ${var.env}"
 
   policy = <<POLICY
 {
@@ -162,6 +164,7 @@ POLICY
   depends_on = [aws_cloudwatch_log_stream.cloudwatch_log_stream]
 }
 
+# CloudTrail Role
 resource "aws_iam_role" "cloudtrail_cloudwatch_role" {
   name = "${var.env}_cloudtrail_cloudwatch_role"
   path = "/service-role/"
@@ -188,6 +191,7 @@ EOF
   depends_on = [aws_iam_policy.cloudtrail_cloudwatch_policy]
 }
 
+# CloudTrail Role Policy Assignment
 resource "aws_iam_role_policy_attachment" "cloudtrail_cloudwatch_role_policy_attachement" {
   role       = aws_iam_role.cloudtrail_cloudwatch_role.name
   policy_arn = aws_iam_policy.cloudtrail_cloudwatch_policy.arn
@@ -195,8 +199,9 @@ resource "aws_iam_role_policy_attachment" "cloudtrail_cloudwatch_role_policy_att
   depends_on = [aws_iam_role.cloudtrail_cloudwatch_role]
 }
 
-resource "aws_s3_bucket" "logs_bucket" {
-  bucket = local.logs_bucket_name
+# CloudTrail Bucket
+resource "aws_s3_bucket" "cloudtrail_bucket" {
+  bucket = local.cloudtrail_bucket_name
   force_destroy = true
   tags = {
     Name = "Bucket for logs"
@@ -206,7 +211,7 @@ resource "aws_s3_bucket" "logs_bucket" {
 
 # CloudTrail bucket policy
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
-  bucket = aws_s3_bucket.logs_bucket.id
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
   policy = <<POLICY
 {
     "Version": "2012-10-17",
@@ -218,7 +223,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:GetBucketAcl",
-            "Resource": "arn:aws:s3:::${local.logs_bucket_name}"
+            "Resource": "arn:aws:s3:::${local.cloudtrail_bucket_name}"
         },
         {
             "Sid": "AWSCloudTrailWrite",
@@ -227,7 +232,7 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
               "Service": "cloudtrail.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::${local.logs_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
+            "Resource": "arn:aws:s3:::${local.cloudtrail_bucket_name}/AWSLogs/${data.aws_caller_identity.current.account_id}/*",
             "Condition": {
                 "StringEquals": {
                     "s3:x-amz-acl": "bucket-owner-full-control"
@@ -239,8 +244,9 @@ resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
 POLICY
 }
 
-resource "aws_s3_bucket_public_access_block" "s3_logs_bucket_public_access" {
-  bucket = aws_s3_bucket.logs_bucket.id
+# CloudTrail Bucket Prevent Public Access
+resource "aws_s3_bucket_public_access_block" "s3_cloudtrail_bucket_public_access" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
 
   block_public_acls = true
   block_public_policy = true
@@ -248,9 +254,10 @@ resource "aws_s3_bucket_public_access_block" "s3_logs_bucket_public_access" {
   restrict_public_buckets = true
 }
 
+# Enable CloudTrail
 resource "aws_cloudtrail" "cloudtrail" {
   name = "${var.env}_cloudtrail"
-  s3_bucket_name = aws_s3_bucket.logs_bucket.id
+  s3_bucket_name = aws_s3_bucket.cloudtrail_bucket.id
   is_multi_region_trail = true
   enable_log_file_validation = true
   kms_key_id = aws_kms_key.cloudtrail_kms_key.arn
@@ -277,18 +284,20 @@ resource "aws_cloudtrail" "cloudtrail" {
 
   depends_on = [
     aws_iam_role_policy_attachment.cloudtrail_cloudwatch_role_policy_attachement,
-    aws_s3_bucket.logs_bucket
+    aws_s3_bucket.cloudtrail_bucket
   ]
 }
 
+# CloudTrail KMS Key
 resource "aws_kms_key" "cloudtrail_key" {
   description             = "This key is used to encrypt bucket objects"
   deletion_window_in_days = 10
   enable_key_rotation     = true
 }
 
+# Encrypt CloudTrail Bucket
 resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt_cloudtrail_bucket" {
-  bucket = aws_s3_bucket.logs_bucket.bucket
+  bucket = aws_s3_bucket.cloudtrail_bucket.bucket
 
   rule {
     apply_server_side_encryption_by_default {
@@ -298,10 +307,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encrypt_cloudtrai
   }
 }
 
-# # resource "aws_s3_bucket_versioning" "version-ct-bucket" {
-# #   bucket = aws_s3_bucket.ct-bucket.id
-# #   versioning_configuration {
-# #     status     = "Enabled"
-# #     mfa_delete = "Enabled"
-# #   }
-# # }
+# CloudTrail Bucket Versioning
+resource "aws_s3_bucket_versioning" "version_cloudtrail_bucket" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  versioning_configuration {
+    status     = "Enabled"
+  }
+}

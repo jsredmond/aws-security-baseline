@@ -96,3 +96,10 @@ resource "aws_config_configuration_recorder_status" "config_status" {
   is_enabled = true
   depends_on = [aws_config_delivery_channel.config_deliv_chan]
 }
+
+resource "aws_s3_bucket_versioning" "version_config_bucket" {
+  bucket = aws_s3_bucket.config_bucket.id
+  versioning_configuration {
+    status     = "Enabled"
+  }
+}

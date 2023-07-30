@@ -11,6 +11,12 @@ resource "aws_s3_bucket" "config_bucket" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_logging" "config_bucket_logging" {
+  bucket = aws_s3_bucket.config_bucket.id
+  target_bucket = aws_s3_bucket.config_bucket.id
+  target_prefix = "config-logs/"
+}
+
 # Config bucket public access blocked
 resource "aws_s3_bucket_public_access_block" "config_bucket_acl" {
   bucket = aws_s3_bucket.config_bucket.id

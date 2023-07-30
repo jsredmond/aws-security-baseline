@@ -209,6 +209,12 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
   }
 }
 
+resource aws_s3_bucket_logging "cloudtrail_bucket_logging" {
+  bucket = local.cloudtrail_bucket_name
+  target_bucket = aws_s3_bucket.cloudtrail_bucket.id
+  target_prefix = "logs/"
+}
+
 # CloudTrail bucket policy
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {
   bucket = aws_s3_bucket.cloudtrail_bucket.id
@@ -264,7 +270,7 @@ resource "aws_cloudtrail" "cloudtrail" {
 
   event_selector {
     read_write_type           = "All"
-    include_management_events = false
+    include_management_events = true
 
     data_resource {
       type = "AWS::S3::Object"

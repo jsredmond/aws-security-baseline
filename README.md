@@ -92,6 +92,40 @@ Learn more about the AWS services deployed as part of this security baseline:
 - Security Hub is enabled with foundational and CIS standard compliance checks.
 - All regions are not enabled by default. Ensure `region` is configured as needed.
 
+## Linting and Security Considerations
+
+- **Checkov Policy Skips**:  
+  This baseline includes a justified `checkov:skip` directive on
+  `CKV_AWS_33` (wildcard principal in KMS key policy) for the
+  `aws_kms_key.config_key` resource. This key is used internally, and access
+  is tightly scoped in practice, though the wildcard is necessary to meet
+  other configuration constraints.
+
+- **GuardDuty Organization Support**:  
+  GuardDuty is now enabled with support for auto-enrollment of **all**
+  organization accounts. This change requires that the account using this
+  Terraform code is assigned as the **GuardDuty delegated administrator** for
+  the AWS Organization.
+
+- **S3 Event Notifications and Lifecycle Configuration**:  
+  S3 buckets now include lifecycle rules (e.g., log expiration) and event
+  notification support using `aws_s3_bucket_notification` where applicable.
+  These changes satisfy several security checks including:
+
+  - Lifecycle expiration on logs
+    (`CKV_AWS_300`)
+  - S3 event notification configuration
+    (`CKV2_AWS_62`)
+  - Lifecycle configuration existence
+    (`CKV2_AWS_61`)
+
+- **Known Tooling Gaps**:  
+  Some security checks (e.g., GuardDuty regional enforcement `CKV2_AWS_3`)
+  require additional context not enforceable solely through Terraform or are
+  constrained by organizational configuration scope. These are being tracked
+  and may require manual remediation or future updates to the Terraform
+  provider.
+
 ## Authors
 
 Repository managed by [Jeremy Redmond](https://github.com/jsredmond).

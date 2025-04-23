@@ -182,6 +182,16 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
     Name        = "Bucket for logs"
     Environment = var.env
   }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+# S3 EventBridge notification for CloudTrail bucket
+resource "aws_s3_bucket_notification" "cloudtrail_bucket_notification" {
+  bucket      = aws_s3_bucket.cloudtrail_bucket.id
+  eventbridge = true
 }
 
 # S3 access logging for CloudTrail bucket (logs to same bucket with prefix)
@@ -205,6 +215,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail_bucket_lifecycle" {
 
     expiration {
       days = 365
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
     }
   }
 }
@@ -233,11 +247,6 @@ resource "aws_s3_bucket_replication_configuration" "cloudtrail_replication" {
   }
 }
 
-resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
-  bucket        = local.cloudtrail_bucket_name
-  target_bucket = aws_s3_bucket.cloudtrail_bucket.id
-  target_prefix = "logs/"
-}
 
 # CloudTrail bucket policy
 resource "aws_s3_bucket_policy" "cloudtrail_bucket_policy" {

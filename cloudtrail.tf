@@ -52,7 +52,7 @@ resource "aws_kms_key" "cloudtrail_kms_key" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid = "AllowCloudTrailSNSAccess",
+        Sid    = "AllowCloudTrailSNSAccess",
         Effect = "Allow",
         Principal = {
           Service = [
@@ -70,7 +70,7 @@ resource "aws_kms_key" "cloudtrail_kms_key" {
         Resource = "*"
       },
       {
-        Sid = "AllowRootAccountFullAccess",
+        Sid    = "AllowRootAccountFullAccess",
         Effect = "Allow",
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"

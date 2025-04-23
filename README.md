@@ -12,7 +12,7 @@ The following AWS services are configured and enabled as part of the baseline:
 
 # Deploying an AWS Security Baseline with Terraform
 
-[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
+[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
 
 ## Terraform Modules and Files
 

@@ -55,7 +55,13 @@ The configuration is broken into the following key files:
 
 ## Outputs
 
-Currently, no outputs are defined. Future versions may include outputs such as Security Hub ARN, CloudTrail bucket name, and Config recorder status.
+The Terraform configuration provides the following outputs after deployment:
+
+- `cloudtrail_bucket_name`: Name of the S3 bucket used for CloudTrail logs.
+- `config_recorder_name`: Name of the AWS Config recorder.
+- `securityhub_account_arn`: ARN of the AWS Security Hub account.
+- `guardduty_detector_id`: ID of the GuardDuty detector.
+- `detective_graph_id`: ID of the Amazon Detective graph.
 
 ## Resources and Documentation
 

@@ -1,7 +1,7 @@
 # KMS key for AWS Config
-checkov:skip=CKV_AWS_33: wildcard principal is allowed for internal config key
 resource "aws_kms_key" "config_key" {
   description             = "This key is used to encrypt bucket objects"
+    #checkov:skip=CKV_AWS_33: wildcard principal is allowed for internal config key
   deletion_window_in_days = 10
   enable_key_rotation     = true
   policy = jsonencode({

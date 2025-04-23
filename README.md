@@ -1,6 +1,6 @@
 # Deploying an AWS Security Baseline with Terraform
 
-[![GitHub Super-Linter](https://github.com/jsredmond/aws-security-baseline/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
 
 ## Features
 

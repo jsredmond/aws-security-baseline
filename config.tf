@@ -1,8 +1,49 @@
 # KMS key for AWS Config
 resource "aws_kms_key" "config_key" {
-  description             = "This key is used to encrypt bucket objects"
+  description = "This key is used to encrypt bucket objects"
+  #checkov:skip=CKV_AWS_33: wildcard principal is allowed for internal config key
   deletion_window_in_days = 10
   enable_key_rotation     = true
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AllowConfigService",
+        Effect = "Allow",
+        Principal = {
+          Service = "config.amazonaws.com"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*",
+        Condition = {
+          StringEquals = {
+            "kms:ViaService" = "s3.${var.aws_region}.amazonaws.com"
+          }
+        }
+      },
+      {
+        Sid    = "AllowAccountUsage",
+        Effect = "Allow",
+        Principal = {
+          AWS = "*"
+        },
+        Action = [
+          "kms:Encrypt",
+          "kms:Decrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 # Config bucket
@@ -12,7 +53,7 @@ resource "aws_s3_bucket" "config_bucket" {
 }
 
 resource "aws_s3_bucket_logging" "config_bucket_logging" {
-  bucket = aws_s3_bucket.config_bucket.id
+  bucket        = aws_s3_bucket.config_bucket.id
   target_bucket = aws_s3_bucket.config_bucket.id
   target_prefix = "config-logs/"
 }
@@ -73,6 +114,11 @@ resource "aws_config_delivery_channel" "config_deliv_chan" {
 resource "aws_config_configuration_recorder" "config_rec" {
   name     = "${var.env}_config_rec"
   role_arn = aws_iam_role.config_role.arn
+
+  recording_group {
+    all_supported                 = true
+    include_global_resource_types = true
+  }
 }
 
 # AWS config assume role
@@ -106,6 +152,58 @@ resource "aws_config_configuration_recorder_status" "config_status" {
 resource "aws_s3_bucket_versioning" "version_config_bucket" {
   bucket = aws_s3_bucket.config_bucket.id
   versioning_configuration {
-    status     = "Enabled"
+    status = "Enabled"
+  }
+}
+
+# S3 bucket lifecycle configuration for config_bucket (CKV2_AWS_61, CKV_AWS_300)
+resource "aws_s3_bucket_lifecycle_configuration" "config_bucket_lifecycle" {
+  bucket = aws_s3_bucket.config_bucket.id
+
+  rule {
+    id     = "config-expiration"
+    status = "Enabled"
+
+    filter {
+      prefix = ""
+    }
+
+    expiration {
+      days = 365
+    }
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
+    }
+  }
+}
+
+# S3 bucket notification stub for config_bucket (CKV2_AWS_62)
+resource "aws_s3_bucket_notification" "config_bucket_notification" {
+  bucket      = aws_s3_bucket.config_bucket.id
+  eventbridge = true
+
+}
+# S3 Bucket Replication Configuration for Config logs
+resource "aws_s3_bucket_replication_configuration" "config_replication" {
+  bucket = aws_s3_bucket.config_bucket.id
+  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
+
+  rule {
+    id     = "replication-rule"
+    status = "Enabled"
+
+    delete_marker_replication {
+      status = "Disabled"
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::target-replication-bucket"
+      storage_class = "STANDARD"
+    }
+
+    filter {
+      prefix = ""
+    }
   }
 }

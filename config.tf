@@ -73,6 +73,11 @@ resource "aws_config_delivery_channel" "config_deliv_chan" {
 resource "aws_config_configuration_recorder" "config_rec" {
   name     = "${var.env}_config_rec"
   role_arn = aws_iam_role.config_role.arn
+
+  recording_group {
+    all_supported                 = true
+    include_global_resource_types = true
+  }
 }
 
 # AWS config assume role

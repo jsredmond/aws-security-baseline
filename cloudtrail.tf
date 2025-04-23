@@ -184,6 +184,55 @@ resource "aws_s3_bucket" "cloudtrail_bucket" {
   }
 }
 
+# S3 access logging for CloudTrail bucket (logs to same bucket with prefix)
+resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
+  bucket        = aws_s3_bucket.cloudtrail_bucket.id
+  target_bucket = aws_s3_bucket.cloudtrail_bucket.id
+  target_prefix = "access-logs/"
+}
+
+# S3 Bucket Lifecycle Configuration for CloudTrail logs
+resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail_bucket_lifecycle" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+
+  rule {
+    id     = "log-expiration"
+    status = "Enabled"
+
+    filter {
+      prefix = ""
+    }
+
+    expiration {
+      days = 365
+    }
+  }
+}
+
+# S3 Bucket Replication Configuration for CloudTrail logs
+resource "aws_s3_bucket_replication_configuration" "cloudtrail_replication" {
+  bucket = aws_s3_bucket.cloudtrail_bucket.id
+  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
+
+  rule {
+    id     = "replication-rule"
+    status = "Enabled"
+
+    delete_marker_replication {
+      status = "Disabled"
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::target-replication-bucket"
+      storage_class = "STANDARD"
+    }
+
+    filter {
+      prefix = ""
+    }
+  }
+}
+
 resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
   bucket        = local.cloudtrail_bucket_name
   target_bucket = aws_s3_bucket.cloudtrail_bucket.id
@@ -302,6 +351,21 @@ resource "aws_kms_key" "cloudtrail_key" {
   description             = "This key is used to encrypt bucket objects"
   deletion_window_in_days = 10
   enable_key_rotation     = true
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid    = "AllowRootAccountFullAccess",
+        Effect = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        Action   = "kms:*",
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 # Encrypt CloudTrail Bucket

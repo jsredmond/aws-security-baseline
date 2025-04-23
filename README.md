@@ -1,6 +1,9 @@
 # Overview
 
-This project provides a modular Terraform implementation to deploy a foundational set of AWS security services. It is intended as a baseline for small to medium-sized AWS environments looking to enforce security best practices with minimal manual configuration.
+This project provides a modular Terraform implementation to deploy a
+foundational set of AWS security services. It is intended as a baseline
+for small to medium-sized AWS environments looking to enforce security
+best practices with minimal manual configuration.
 
 The following AWS services are configured and enabled as part of the baseline:
 
@@ -8,11 +11,11 @@ The following AWS services are configured and enabled as part of the baseline:
 - **AWS Config** – Configuration tracking and compliance recording for AWS resources.
 - **Amazon Detective** – Visualization and analysis of security findings.
 - **Amazon GuardDuty** – Continuous threat detection and anomaly monitoring.
-- **AWS Security Hub** – Aggregation of security alerts and compliance status across services.
+- **AWS Security Hub** – Aggregates security findings and compliance statuses.
 
-# Deploying an AWS Security Baseline with Terraform
+## Deploying an AWS Security Baseline with Terraform
 
-[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
+[![Super-Linter Status](https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
 
 ## Terraform Modules and Files
 
@@ -20,16 +23,22 @@ The configuration is broken into the following key files:
 
 - `providers.tf` – Sets up the AWS provider and region.
 - `variables.tf` – Defines reusable input variables for flexible deployment.
-- `cloudtrail.tf` – Configures a multi-region CloudTrail trail with an associated S3 bucket and encryption.
-- `config.tf` – Enables AWS Config, sets up delivery channels, and assigns appropriate IAM roles.
+- `cloudtrail.tf` – Configures a multi-region CloudTrail trail  
+  with an associated S3  
+  bucket and encryption.
+- `config.tf` – Enables AWS Config, sets up delivery channels, and assigns appropriate
+  IAM roles.
 - `detective.tf` – Enables Amazon Detective for the account and region.
 - `guardduty.tf` – Enables Amazon GuardDuty and sets the appropriate configurations.
-- `securityhub.tf` – Activates AWS Security Hub and enables foundational and CIS standard checks.
-- `random.tf` – Generates random IDs for naming to ensure uniqueness across resource deployments.
+- `securityhub.tf` – Activates AWS Security Hub and enables foundational and CIS
+  standard checks.
+- `random.tf` – Generates random IDs for naming to ensure uniqueness across resource
+  deployments.
 
 ## Prerequisites
 
 - Terraform >= 1.14.4
+  (ensure your local environment meets this version or higher)
 - Valid AWS credentials
 - Administrator access to the AWS account
 - Permissions to enable service-linked roles and create global services like CloudTrail
@@ -38,19 +47,20 @@ The configuration is broken into the following key files:
 
 1. Clone the repository:
 
-   ```
+   ```bash
    git clone https://github.com/jsredmond/aws-security-baseline.git
    cd aws-security-baseline
    ```
 
 2. Initialize Terraform:
 
-   ```
+   ```bash
    terraform init
    ```
 
 3. Review and apply the plan:
-   ```
+
+   ```bash
    terraform plan
    terraform apply
    ```
@@ -77,7 +87,8 @@ Learn more about the AWS services deployed as part of this security baseline:
 
 ## Notes
 
-- This project assumes a single-account setup. For multi-account deployments, additional configuration is required.
+- This project assumes a single-account setup. For multi-account deployments,
+  additional configuration is required.
 - Security Hub is enabled with foundational and CIS standard compliance checks.
 - All regions are not enabled by default. Ensure `region` is configured as needed.
 

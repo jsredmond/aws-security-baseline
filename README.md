@@ -14,7 +14,7 @@ This repository provides Terraform template files to setup and enable a baseline
 
 ## Terraform versions
 
-For Terraform 0.13 or later use any version from `v4.48.0` of hashicorp/aws module or newer.
+For Terraform 1.14.4 or later use any version from `v5.95.0` of hashicorp/aws module or newer.
 
 ## Authors
 

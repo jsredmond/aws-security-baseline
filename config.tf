@@ -181,4 +181,28 @@ resource "aws_s3_bucket_lifecycle_configuration" "config_bucket_lifecycle" {
 resource "aws_s3_bucket_notification" "config_bucket_notification" {
   bucket      = aws_s3_bucket.config_bucket.id
   eventbridge = true
+
+}
+# S3 Bucket Replication Configuration for Config logs
+resource "aws_s3_bucket_replication_configuration" "config_replication" {
+  bucket = aws_s3_bucket.config_bucket.id
+  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
+
+  rule {
+    id     = "replication-rule"
+    status = "Enabled"
+
+    delete_marker_replication {
+      status = "Disabled"
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::target-replication-bucket"
+      storage_class = "STANDARD"
+    }
+
+    filter {
+      prefix = ""
+    }
+  }
 }

@@ -179,7 +179,6 @@ resource "aws_s3_bucket_lifecycle_configuration" "config_bucket_lifecycle" {
 
 # S3 bucket notification stub for config_bucket (CKV2_AWS_62)
 resource "aws_s3_bucket_notification" "config_bucket_notification" {
-  bucket = aws_s3_bucket.config_bucket.id
-
-  eventbridge {}
+  bucket      = aws_s3_bucket.config_bucket.id
+  eventbridge = true
 }

@@ -37,12 +37,14 @@ The configuration is broken into the following key files:
 ## Usage
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/jsredmond/aws-security-baseline.git
    cd aws-security-baseline
    ```
 
 2. Initialize Terraform:
+
    ```
    terraform init
    ```

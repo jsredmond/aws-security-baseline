@@ -12,7 +12,7 @@ resource "aws_s3_bucket" "config_bucket" {
 }
 
 resource "aws_s3_bucket_logging" "config_bucket_logging" {
-  bucket = aws_s3_bucket.config_bucket.id
+  bucket        = aws_s3_bucket.config_bucket.id
   target_bucket = aws_s3_bucket.config_bucket.id
   target_prefix = "config-logs/"
 }
@@ -106,6 +106,6 @@ resource "aws_config_configuration_recorder_status" "config_status" {
 resource "aws_s3_bucket_versioning" "version_config_bucket" {
   bucket = aws_s3_bucket.config_bucket.id
   versioning_configuration {
-    status     = "Enabled"
+    status = "Enabled"
   }
 }

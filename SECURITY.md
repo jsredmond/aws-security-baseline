@@ -1,28 +1,69 @@
-# Security Policy
+# 🔐 Security Policy
 
-## Supported Versions
+## 🛡️ Software Security Practices
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+This repository is maintained as part of Heliobright's commitment to  
+secure-by-default infrastructure design. We follow best practices for  
+infrastructure-as-code (IaC) security and apply automated scanning tools to  
+ensure code and configuration safety.
 
-| Version        | Supported          |
-| -------------- | ------------------ |
-| main (latest)  | :white_check_mark: |
-| older versions | :x:                |
+### ✅ Continuous Security Tools
 
-## Reporting a Vulnerability
+We utilize the following tools as part of our continuous validation pipeline:
 
-If you discover a security vulnerability in this repository, please report it responsibly.
+- [**Super-Linter**](https://github.com/github/super-linter): Scans for  
+  errors and bad practices across:
+  - `terraform`, `markdown`, `yaml`, `github_actions`, and more.
+- **Checkov**: Validates Terraform security misconfigurations and compliance
+  against AWS best practices.
+- **TFLint** and **Terraform FMT**: Enforce consistent, error-free  
+  Terraform formatting and linting.
+- **Terrascan**: Scans for violations against known security policies in IaC  
+  templates.
+- **Secret scanning and code scanning**: Enabled via GitHub security settings.
 
-- **Where to report:**  
-  Open a GitHub  
-  [security advisory](https://github.com/jsredmond/aws-security-baseline/security/advisories/new)  
-  or email `security@heliobright.net` for private disclosures.
-- **What to include:**  
-  A clear description of the issue, affected resources or modules,  
-  and any steps to reproduce.
-- **Expected response time:**  
-  We typically respond to vulnerability reports within 3 business days.
-- **Disclosure policy:**  
-  We encourage coordinated disclosure and will work with you  
-  to validate and address the issue before any public release.
+Security scanning is executed automatically via GitHub Actions for every PR  
+to `main` and on a scheduled weekly basis.
+
+---
+
+## 📦 Supported Versions
+
+We provide security support for the latest version of the `main` branch only:
+
+| Version         | Supported |
+| --------------- | --------- |
+| `main` (latest) | ✅        |
+| Older versions  | ❌        |
+
+---
+
+## 📢 Reporting a Vulnerability
+
+We take security seriously and welcome reports from the community.
+
+If you discover a potential vulnerability:
+
+- **Where to report**:  
+  Open a GitHub [security advisory](https://github.com/jsredmond/aws-security-baseline/security/advisories/new)
+  to initiate a private discussion with the maintainers.
+- **What to include**:
+  - Provide a clear description  
+    of the issue
+  - Affected modules or files
+  - Reproduction steps, if applicable
+
+We will acknowledge receipt within **3 business days**, triage the report,  
+and work with you on coordinated disclosure if required.
+
+---
+
+## 🤝 Coordinated Disclosure Policy
+
+We adhere to coordinated disclosure practices. If the vulnerability impacts  
+downstream consumers, we will collaborate on a responsible communication and  
+remediation timeline prior to public disclosure.
+
+---
+
+Thanks for contributing to a safer cloud ecosystem!

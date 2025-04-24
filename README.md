@@ -4,6 +4,8 @@ A modular Terraform implementation to bootstrap security best practices in AWS e
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
 [![Terraform](https://img.shields.io/badge/Terraform-Modules-blueviolet)](https://www.terraform.io/)
+[![CI](https://github.com/jsredmond/aws-security-baseline/actions/workflows/main.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/main.yml)
+[![Lint](https://img.shields.io/badge/Linting-TFLint%20%2F%20Checkov%20%2F%20Terrascan-brightgreen)](#-linting--security)
 
 ---
 

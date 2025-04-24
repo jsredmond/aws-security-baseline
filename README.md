@@ -4,20 +4,19 @@ A modular Terraform implementation to bootstrap security best practices in AWS e
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
 [![Terraform](https://img.shields.io/badge/Terraform-Modules-blueviolet)](https://www.terraform.io/)
-[![CI](https://github.com/jsredmond/aws-security-baseline/actions/workflows/main.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/main.yml)
-[![Lint](https://img.shields.io/badge/Linting-TFLint%20%2F%20Checkov%20%2F%20Terrascan-brightgreen)](#-linting--security)
+[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
 
 ---
 
 ## ✨ Features
 
-| 🔐 Feature   | ✅ Description                   |
-| ------------ | -------------------------------- |
-| CloudTrail   | Centralized API logging          |
-| Config       | Configuration change tracking    |
-| GuardDuty    | Threat detection & alerts        |
-| Detective    | Visual investigation of findings |
-| Security Hub | Central dashboard for findings   |
+| 🔐 Feature   | ✅ Description                      |
+| ------------ | ----------------------------------- |
+| CloudTrail   | Centralized API logging             |
+| Config       | Configuration change tracking       |
+| GuardDuty    | Detects threats and provides alerts |
+| Detective    | Visual investigation of findings    |
+| Security Hub | Central dashboard for findings      |
 
 ---
 
@@ -38,14 +37,14 @@ terraform apply
 ### Terraform Modules and Files
 
 - `providers.tf` – Sets up the AWS provider and region.
-- `variables.tf` – Defines reusable input variables for flexible deployment.
-- `cloudtrail.tf` – Configures a multi-region CloudTrail trail with an associated S3 bucket and
-  encryption.
-- `config.tf` – Enables AWS Config, sets up delivery channels, and assigns appropriate IAM roles.
+- `variables.tf` – Defines input variables for flexible deployment.
+- `cloudtrail.tf` – Sets up CloudTrail logging with multi-region & KMS.
+- `config.tf` – Enables AWS Config and sets roles and delivery channels.
 - `detective.tf` – Enables Amazon Detective for the account and region.
-- `guardduty.tf` – Enables Amazon GuardDuty and sets the appropriate configurations.
-- `securityhub.tf` – Activates AWS Security Hub and enables foundational and CIS standard checks.
-- `random.tf` – Generates random IDs for naming to ensure uniqueness across resource deployments.
+- `guardduty.tf` – Enables Amazon GuardDuty with the proper config.
+- `securityhub.tf` – Enables Security Hub with base + CIS standard checks.
+- `random.tf` – Uses random IDs to ensure resource name uniqueness.
+- `outputs.tf` – Provides output values for resource identifiers.
 
 ### Outputs
 
@@ -71,28 +70,29 @@ Learn more about the AWS services deployed as part of this security baseline:
 
 Includes Checkov, TFLint, and Terrascan integration.
 
-- ✅ Lifecycle policies for logs expiration (`CKV_AWS_300`)
-- ✅ S3 notification setup (`CKV2_AWS_62`)
-- ⏭️ Skips: `CKV_AWS_33` (wildcard principal in KMS key policy) with justification
+- ✅ Log lifecycle expiration policies (`CKV_AWS_300`)
+- ✅ S3 event notification (`CKV2_AWS_62`)
+- ⏭️ Skip: `CKV_AWS_33` – wildcard principal in KMS key allowed for flexibility
 
 Additional notes:
 
-- GuardDuty is enabled with auto-enrollment for all organization accounts (requires delegated
-  admin).
-- Some checks require manual remediation or organizational setup due to tooling limitations.
+- GuardDuty is enabled with auto-enrollment for all org accounts.  
+  (Requires delegated admin.)
+- Some checks need manual remediation or org-level setup.
 
 ---
 
 ## 🛠️ Contributing
 
-We welcome issues and PRs! Please open an issue before submitting major changes.  
+We welcome issues and PRs. Open an issue first before submitting large changes.
 Contributions should follow best practices and include appropriate testing.
 
 ---
 
 ## 👤 Author
 
-Maintained by [Jeremy Redmond](https://github.com/jsredmond)
+Maintained by  
+[Jeremy Redmond](https://github.com/jsredmond)
 
 ---
 

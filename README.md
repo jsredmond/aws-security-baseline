@@ -4,7 +4,7 @@ A modular Terraform implementation to bootstrap security best practices in AWS e
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
 [![Terraform](https://img.shields.io/badge/Terraform-Modules-blueviolet)](https://www.terraform.io/)
-[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/linter.yml)
+[![Super-Linter](https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml/badge.svg)](https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml)
 
 ---
 

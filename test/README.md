@@ -65,7 +65,7 @@ Each test provides detailed output showing:
 - Overall test status
 
 Example output:
-```
+```bash
 ✓ PASS: main.tf exists
 ✓ PASS: variables.tf exists
 ✓ PASS: outputs.tf exists

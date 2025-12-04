@@ -16,13 +16,13 @@ PASS_COUNT=0
 FAIL_COUNT=0
 
 for file in "${REQUIRED_FILES[@]}"; do
-    if [ -f "$MODULE_PATH/$file" ]; then
-        echo "✓ PASS: $file exists"
-        ((PASS_COUNT++))
-    else
-        echo "✗ FAIL: $file is missing"
-        ((FAIL_COUNT++))
-    fi
+	if [ -f "$MODULE_PATH/$file" ]; then
+		echo "✓ PASS: $file exists"
+		((PASS_COUNT++))
+	else
+		echo "✗ FAIL: $file is missing"
+		((FAIL_COUNT++))
+	fi
 done
 
 echo ""
@@ -30,9 +30,9 @@ echo "Results: $PASS_COUNT passed, $FAIL_COUNT failed"
 echo ""
 
 if [ $FAIL_COUNT -eq 0 ]; then
-    echo "✓ Property 1: Module structure completeness - PASSED"
-    exit 0
+	echo "✓ Property 1: Module structure completeness - PASSED"
+	exit 0
 else
-    echo "✗ Property 1: Module structure completeness - FAILED"
-    exit 1
+	echo "✗ Property 1: Module structure completeness - FAILED"
+	exit 1
 fi

@@ -210,7 +210,7 @@ resource "aws_s3_bucket_logging" "cloudtrail" {
 # S3 bucket replication configuration
 resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
   bucket = aws_s3_bucket.cloudtrail.id
-  role   = "arn:aws:iam::${local.account_id}:role/s3-replication-role"
+  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
 
   rule {
     id     = "replication-rule"

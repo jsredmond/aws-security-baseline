@@ -123,7 +123,7 @@ Ensure the following AWS service quotas are sufficient:
 
 - **Encryption at Rest**: All configuration snapshots are encrypted using KMS keys
 - **Encryption in Transit**: AWS Config uses HTTPS for all API calls
-- **S3 Bucket Security**: 
+- **S3 Bucket Security**:
   - Versioning enabled
   - Public access blocked
   - Server-side encryption with KMS
@@ -151,7 +151,7 @@ Ensure the following AWS service quotas are sufficient:
 
 2. **Configuration Recorder**: AWS Config allows only one configuration recorder per region. If you already have a recorder in the region, this module will fail. You'll need to import the existing recorder or delete it first.
 
-3. **Cost Considerations**: 
+3. **Cost Considerations**:
    - AWS Config charges per configuration item recorded
    - S3 storage charges for configuration snapshots
    - KMS key usage charges

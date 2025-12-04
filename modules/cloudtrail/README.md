@@ -135,7 +135,7 @@ Ensure the following AWS service quotas are sufficient:
 - **Encryption in Transit**: CloudTrail uses HTTPS for all API calls
 - **Log File Validation**: Enabled to detect tampering
 - **Multi-Region Trail**: Captures events from all AWS regions
-- **S3 Bucket Security**: 
+- **S3 Bucket Security**:
   - Versioning enabled
   - Public access blocked
   - Server-side encryption with KMS
@@ -159,7 +159,7 @@ Ensure the following AWS service quotas are sufficient:
 
 2. **S3 Data Events**: By default, S3 data events are enabled. This can generate a large volume of logs and increase costs. Set `enable_s3_data_events = false` if you don't need S3 object-level logging.
 
-3. **Cost Considerations**: 
+3. **Cost Considerations**:
    - CloudTrail management events are free for the first trail
    - S3 data events incur charges
    - CloudWatch Logs storage incurs charges

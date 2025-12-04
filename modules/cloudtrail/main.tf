@@ -207,6 +207,30 @@ resource "aws_s3_bucket_logging" "cloudtrail" {
   target_prefix = "access-logs/"
 }
 
+# S3 bucket replication configuration
+resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
+  bucket = aws_s3_bucket.cloudtrail.id
+  role   = "arn:aws:iam::${local.account_id}:role/s3-replication-role"
+
+  rule {
+    id     = "replication-rule"
+    status = "Enabled"
+
+    delete_marker_replication {
+      status = "Disabled"
+    }
+
+    destination {
+      bucket        = "arn:aws:s3:::target-replication-bucket"
+      storage_class = "STANDARD"
+    }
+
+    filter {
+      prefix = ""
+    }
+  }
+}
+
 # S3 bucket policy for CloudTrail
 resource "aws_s3_bucket_policy" "cloudtrail" {
   bucket = aws_s3_bucket.cloudtrail.id

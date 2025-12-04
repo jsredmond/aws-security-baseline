@@ -22,13 +22,6 @@ AWS Security Hub provides a comprehensive view of security alerts and compliance
 ```hcl
 module "securityhub" {
   source = "./modules/securityhub"
-  
-  environment = "prod"
-  
-  common_tags = {
-    Project = "security-baseline"
-    Owner   = "security-team"
-  }
 }
 ```
 
@@ -38,17 +31,10 @@ module "securityhub" {
 module "securityhub" {
   source = "./modules/securityhub"
   
-  environment = "prod"
-  
   # Enable only specific standards
-  enable_cis_standard                = true
-  enable_pci_dss_standard            = true
-  enable_aws_foundational_standard   = false
-  
-  common_tags = {
-    Project = "security-baseline"
-    Owner   = "security-team"
-  }
+  enable_cis_standard              = true
+  enable_pci_dss_standard          = true
+  enable_aws_foundational_standard = false
 }
 ```
 
@@ -58,18 +44,10 @@ module "securityhub" {
 module "securityhub" {
   source = "./modules/securityhub"
   
-  environment = "dev"
-  
   # Enable only AWS Foundational standard for dev
-  enable_cis_standard                = false
-  enable_pci_dss_standard            = false
-  enable_aws_foundational_standard   = true
-  
-  common_tags = {
-    Project     = "security-baseline"
-    Owner       = "security-team"
-    Environment = "dev"
-  }
+  enable_cis_standard              = false
+  enable_pci_dss_standard          = false
+  enable_aws_foundational_standard = true
 }
 ```
 
@@ -99,11 +77,9 @@ module "securityhub" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
 | enable_cis_standard | Enable CIS AWS Foundations Benchmark standard | `bool` | `true` | no |
 | enable_pci_dss_standard | Enable PCI DSS standard | `bool` | `false` | no |
 | enable_aws_foundational_standard | Enable AWS Foundational Security Best Practices standard | `bool` | `true` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
 

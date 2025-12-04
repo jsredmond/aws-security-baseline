@@ -1,20 +1,8 @@
 # Data sources
-data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
 # Locals for computed values
 locals {
-  service_name = "securityhub"
-  common_tags = merge(
-    var.common_tags,
-    {
-      Name        = "${var.environment}-${local.service_name}"
-      Environment = var.environment
-      ManagedBy   = "Terraform"
-      Module      = local.service_name
-    }
-  )
-
   # Map of standards to enable
   enabled_standards_map = {
     cis = var.enable_cis_standard ? "arn:aws:securityhub:${data.aws_region.current.id}::standards/cis-aws-foundations-benchmark/v/1.4.0" : null

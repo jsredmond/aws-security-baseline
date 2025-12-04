@@ -1,0 +1,13 @@
+{
+  "threshold": 10,
+  "reporters": ["console"],
+  "ignore": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.terraform/**",
+    "**/terraform.tfstate*"
+  ],
+  "format": ["bash", "go", "terraform"],
+  "minLines": 10,
+  "minTokens": 100
+}

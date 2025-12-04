@@ -224,7 +224,7 @@ func TestBackendConfigurationStructure(t *testing.T) {
 		// Simple check: backend "s3" should appear after terraform {
 		terraformIndex := strings.Index(contentStr, "terraform {")
 		backendIndex := strings.Index(contentStr, `backend "s3"`)
-		
+
 		if terraformIndex == -1 {
 			t.Error("terraform block not found")
 		}

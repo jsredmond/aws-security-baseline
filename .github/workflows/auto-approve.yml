@@ -5,7 +5,7 @@ permissions:
   contents: read
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - reopened
@@ -17,6 +17,6 @@ jobs:
     if: github.actor == 'jsredmond'
     steps:
       - name: Auto-approve pull request
-        uses: hmarr/auto-approve-action@v4
+        uses: hmarr/auto-approve-action@44888193675f29a83e04faf4002fa8c0b366a1434 # v4.0.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"

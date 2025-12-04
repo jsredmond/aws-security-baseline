@@ -17,6 +17,6 @@ jobs:
     if: github.actor == 'jsredmond'
     steps:
       - name: Auto-approve pull request
-        uses: hmarr/auto-approve-action@44888193675f29a83e04faf4002fa8c0b366a1434 # v4.0.0
+        uses: hmarr/auto-approve-action@f0939ea97e9205ef24d872e76833fa908a770363 # v4.0.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"

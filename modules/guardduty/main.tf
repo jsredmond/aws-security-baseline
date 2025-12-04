@@ -1,10 +1,6 @@
 # GuardDuty Module - Threat Detection Service
 # This module deploys and configures Amazon GuardDuty with organization-wide threat detection
 
-# Data sources
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 # Random ID for unique naming
 resource "random_id" "suffix" {
   byte_length = 8

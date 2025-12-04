@@ -157,7 +157,7 @@ resource "aws_s3_bucket_versioning" "version_config_bucket" {
 }
 
 # S3 bucket lifecycle configuration for config_bucket (CKV2_AWS_61, CKV_AWS_300)
-#checkov:skip=CKV_AWS_300:abort_incomplete_multipart_upload is configured with 7 days
+# checkov:skip=CKV_AWS_300: abort_incomplete_multipart_upload is configured with 7 days
 resource "aws_s3_bucket_lifecycle_configuration" "config_bucket_lifecycle" {
   bucket = aws_s3_bucket.config_bucket.id
 

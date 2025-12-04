@@ -1,10 +1,6 @@
 # Detective Module - Security Investigation Service
 # This module deploys and configures Amazon Detective for security investigation
 
-# Data sources
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 # Random ID for unique naming
 resource "random_id" "suffix" {
   byte_length = 8

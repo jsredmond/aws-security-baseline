@@ -202,6 +202,7 @@ resource "aws_s3_bucket_logging" "cloudtrail_bucket_logging" {
 }
 
 # S3 Bucket Lifecycle Configuration for CloudTrail logs
+#checkov:skip=CKV_AWS_300:abort_incomplete_multipart_upload is configured with 7 days
 resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail_bucket_lifecycle" {
   bucket = aws_s3_bucket.cloudtrail_bucket.id
 

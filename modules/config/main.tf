@@ -14,7 +14,7 @@ locals {
   service_name = "config"
   bucket_name  = "${var.environment}-${local.service_name}-${random_id.suffix.dec}"
   account_id   = data.aws_caller_identity.current.account_id
-  region       = data.aws_region.current.name
+  region       = data.aws_region.current.id
 
   common_tags = merge(
     var.common_tags,

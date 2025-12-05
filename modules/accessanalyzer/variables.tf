@@ -17,9 +17,9 @@ variable "is_organization_analyzer" {
 }
 
 variable "enable_unused_access_analyzer" {
-  description = "Enable unused access analyzer to identify unused IAM permissions"
+  description = "Enable unused access analyzer to identify unused IAM permissions (Note: ACCOUNT_UNUSED_ACCESS type may not be supported in all regions/versions)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "unused_access_age_days" {

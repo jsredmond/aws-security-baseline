@@ -154,3 +154,57 @@ variable "securityhub_enable_aws_foundational_standard" {
   type        = bool
   default     = true
 }
+
+variable "enable_accessanalyzer" {
+  description = "Enable IAM Access Analyzer module"
+  type        = bool
+  default     = true
+}
+
+variable "enable_inspector" {
+  description = "Enable Amazon Inspector module"
+  type        = bool
+  default     = true
+}
+
+variable "enable_macie" {
+  description = "Enable Amazon Macie module"
+  type        = bool
+  default     = true
+}
+
+# IAM Access Analyzer Variables
+
+variable "accessanalyzer_is_organization" {
+  description = "Whether to create an organization-level Access Analyzer"
+  type        = bool
+  default     = false
+}
+
+variable "accessanalyzer_enable_unused_access" {
+  description = "Enable unused access analyzer"
+  type        = bool
+  default     = true
+}
+
+variable "accessanalyzer_unused_access_age_days" {
+  description = "Number of days to consider access as unused"
+  type        = number
+  default     = 90
+}
+
+# Amazon Inspector Variables
+
+variable "inspector_resource_types" {
+  description = "Types of resources to scan with Inspector (EC2, ECR, LAMBDA, LAMBDA_CODE)"
+  type        = list(string)
+  default     = ["EC2", "ECR", "LAMBDA"]
+}
+
+# Amazon Macie Variables
+
+variable "macie_finding_publishing_frequency" {
+  description = "Frequency of publishing Macie findings (FIFTEEN_MINUTES, ONE_HOUR, SIX_HOURS)"
+  type        = string
+  default     = "SIX_HOURS"
+}

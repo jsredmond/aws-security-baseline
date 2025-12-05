@@ -28,7 +28,7 @@ jobs:
           persist-credentials: false
 
       - name: Super-linter
-        uses: super-linter/super-linter@4e51915f4a812abf59fed160bb14595c0a38a9e7 # v8.0.0
+        uses: super-linter/super-linter@502f4fe48a81a392756e173e39a861f8c8efe056 # v8.3.0
         env:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,3 +38,5 @@ jobs:
           VALIDATE_GO_MODULES: false
           # Disable JSCPD - test scripts intentionally share similar validation patterns
           VALIDATE_JSCPD: false
+          # Disable JSON_PRETTIER - Biome handles JSON formatting with tabs
+          VALIDATE_JSON_PRETTIER: false

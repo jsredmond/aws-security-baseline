@@ -3,6 +3,7 @@
 ## Purpose
 
 This module deploys and configures AWS Config with comprehensive security features including:
+
 - Configuration recording for all supported AWS resources
 - KMS encryption for configuration snapshots
 - S3 bucket with versioning, lifecycle policies, and public access blocking
@@ -22,7 +23,7 @@ module "config" {
   source = "./modules/config"
 
   environment = "prod"
-  
+
   common_tags = {
     Project = "security-baseline"
     Owner   = "security-team"
@@ -40,7 +41,7 @@ module "config" {
   s3_lifecycle_expiration_days = 730
   kms_key_deletion_window      = 10
   include_global_resources     = true
-  
+
   common_tags = {
     Project     = "security-baseline"
     Owner       = "security-team"
@@ -52,26 +53,26 @@ module "config" {
 
 ## Input Variables
 
-| Name | Description | Type | Default | Required | Validation |
-|------|-------------|------|---------|----------|------------|
-| environment | Environment name (dev, staging, prod) | string | - | yes | Must be dev, staging, or prod |
-| s3_lifecycle_expiration_days | Number of days before S3 objects expire | number | 365 | no | Must be greater than 0 |
-| kms_key_deletion_window | Number of days before KMS key deletion | number | 10 | no | Must be between 7 and 30 |
-| include_global_resources | Include global resources in Config recording | bool | true | no | - |
-| common_tags | Common tags to apply to all resources | map(string) | {} | no | - |
+| Name                         | Description                                  | Type        | Default | Required | Validation                    |
+| ---------------------------- | -------------------------------------------- | ----------- | ------- | -------- | ----------------------------- |
+| environment                  | Environment name (dev, staging, prod)        | string      | -       | yes      | Must be dev, staging, or prod |
+| s3_lifecycle_expiration_days | Number of days before S3 objects expire      | number      | 365     | no       | Must be greater than 0        |
+| kms_key_deletion_window      | Number of days before KMS key deletion       | number      | 10      | no       | Must be between 7 and 30      |
+| include_global_resources     | Include global resources in Config recording | bool        | true    | no       | -                             |
+| common_tags                  | Common tags to apply to all resources        | map(string) | {}      | no       | -                             |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| recorder_name | Name of the AWS Config configuration recorder |
-| recorder_id | ID of the AWS Config configuration recorder |
-| s3_bucket_name | Name of the S3 bucket for Config snapshots |
-| s3_bucket_arn | ARN of the S3 bucket for Config snapshots |
-| delivery_channel_id | ID of the AWS Config delivery channel |
-| kms_key_id | ID of the KMS key for Config encryption |
-| kms_key_arn | ARN of the KMS key for Config encryption |
-| iam_role_arn | ARN of the IAM role for AWS Config |
+| Name                | Description                                   |
+| ------------------- | --------------------------------------------- |
+| recorder_name       | Name of the AWS Config configuration recorder |
+| recorder_id         | ID of the AWS Config configuration recorder   |
+| s3_bucket_name      | Name of the S3 bucket for Config snapshots    |
+| s3_bucket_arn       | ARN of the S3 bucket for Config snapshots     |
+| delivery_channel_id | ID of the AWS Config delivery channel         |
+| kms_key_id          | ID of the KMS key for Config encryption       |
+| kms_key_arn         | ARN of the KMS key for Config encryption      |
+| iam_role_arn        | ARN of the IAM role for AWS Config            |
 
 ## Prerequisites
 
@@ -80,6 +81,7 @@ module "config" {
 The following AWS permissions are required to deploy this module:
 
 **AWS Config:**
+
 - `config:PutConfigurationRecorder`
 - `config:PutDeliveryChannel`
 - `config:StartConfigurationRecorder`
@@ -87,6 +89,7 @@ The following AWS permissions are required to deploy this module:
 - `config:DescribeDeliveryChannels`
 
 **S3:**
+
 - `s3:CreateBucket`
 - `s3:PutBucketPolicy`
 - `s3:PutBucketVersioning`
@@ -98,12 +101,14 @@ The following AWS permissions are required to deploy this module:
 - `s3:PutReplicationConfiguration`
 
 **KMS:**
+
 - `kms:CreateKey`
 - `kms:CreateAlias`
 - `kms:PutKeyPolicy`
 - `kms:EnableKeyRotation`
 
 **IAM:**
+
 - `iam:CreateRole`
 - `iam:CreatePolicy`
 - `iam:AttachRolePolicy`
@@ -113,6 +118,7 @@ The following AWS permissions are required to deploy this module:
 ### Service Quotas
 
 Ensure the following AWS service quotas are sufficient:
+
 - Config recorders per region: Default is 1
 - S3 buckets per account: Default is 100
 - KMS keys per region: Default is 1000
@@ -173,6 +179,7 @@ This module has been updated to implement AWS security best practices:
 4. **Refined KMS Key Policy**: Removed wildcard principal and added service-specific conditions for better access control
 
 These changes improve security posture by:
+
 - Enforcing least privilege access for the Config IAM role
 - Ensuring Config can properly discover and record all AWS resource types
 - Preventing confused deputy attacks on S3 bucket
@@ -202,7 +209,7 @@ module "config_primary" {
 
   environment              = "prod"
   include_global_resources = true
-  
+
   providers = {
     aws = aws.us-east-1
   }
@@ -214,7 +221,7 @@ module "config_secondary" {
 
   environment              = "prod"
   include_global_resources = false
-  
+
   providers = {
     aws = aws.us-west-2
   }

@@ -1,4 +1,4 @@
-# Terraform and Provider Version Constraints
+# Amazon Macie Module - Version Constraints
 
 terraform {
   required_version = ">= 1.14.1"

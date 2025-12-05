@@ -40,3 +40,16 @@ common_tags = {
   Environment = "dev"
   Owner       = "Security-Team"
 }
+# IAM Access Analyzer Configuration
+enable_accessanalyzer                 = true
+accessanalyzer_is_organization        = false
+accessanalyzer_enable_unused_access   = true
+accessanalyzer_unused_access_age_days = 90
+
+# Amazon Inspector Configuration
+enable_inspector         = true
+inspector_resource_types = ["EC2", "ECR", "LAMBDA"]
+
+# Amazon Macie Configuration
+enable_macie                       = true
+macie_finding_publishing_frequency = "SIX_HOURS"

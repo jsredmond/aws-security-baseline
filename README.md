@@ -125,9 +125,11 @@ The root module orchestrates all security services by calling child modules:
 Each module is self-contained with its own documentation:
 
 #### [CloudTrail Module](./modules/cloudtrail)
+
 Multi-region API logging with KMS encryption, CloudWatch integration, and SNS notifications.
 
 **Key Features:**
+
 - Multi-region trail configuration
 - KMS encryption for logs
 - CloudWatch Logs integration
@@ -135,9 +137,11 @@ Multi-region API logging with KMS encryption, CloudWatch integration, and SNS no
 - S3 bucket with security best practices
 
 #### [Config Module](./modules/config)
+
 Configuration change tracking and compliance monitoring.
 
 **Key Features:**
+
 - Configuration recorder
 - S3 delivery channel
 - KMS encryption
@@ -145,26 +149,32 @@ Configuration change tracking and compliance monitoring.
 - Global resource recording
 
 #### [GuardDuty Module](./modules/guardduty)
+
 Intelligent threat detection with organization-wide support.
 
 **Key Features:**
+
 - Threat detection across AWS accounts
 - S3, Kubernetes, and Malware protection
 - Organization auto-enrollment
 - Configurable finding frequency
 
 #### [Detective Module](./modules/detective)
+
 Visual investigation and analysis of security findings.
 
 **Key Features:**
+
 - Behavior graph for investigation
 - Integration with GuardDuty findings
 - Requires 48 hours of GuardDuty data
 
 #### [Security Hub Module](./modules/securityhub)
+
 Centralized security findings dashboard.
 
 **Key Features:**
+
 - Aggregates findings from multiple services
 - CIS AWS Foundations Benchmark
 - AWS Foundational Security Best Practices
@@ -172,30 +182,30 @@ Centralized security findings dashboard.
 
 ### Input Variables
 
-| Variable                  | Description                        | Type   | Default      |
-| ------------------------- | ---------------------------------- | ------ | ------------ |
-| `environment`             | Environment name (dev/staging/prod)| string | **required** |
-| `aws_region`              | AWS region for deployment          | string | `us-east-1`  |
-| `enable_cloudtrail`       | Enable CloudTrail module           | bool   | `true`       |
-| `enable_config`           | Enable AWS Config module           | bool   | `true`       |
-| `enable_guardduty`        | Enable GuardDuty module            | bool   | `true`       |
-| `enable_detective`        | Enable Detective module            | bool   | `true`       |
-| `enable_securityhub`      | Enable Security Hub module         | bool   | `true`       |
-| `common_tags`             | Common tags for all resources      | map    | `{}`         |
+| Variable             | Description                         | Type   | Default      |
+| -------------------- | ----------------------------------- | ------ | ------------ |
+| `environment`        | Environment name (dev/staging/prod) | string | **required** |
+| `aws_region`         | AWS region for deployment           | string | `us-east-1`  |
+| `enable_cloudtrail`  | Enable CloudTrail module            | bool   | `true`       |
+| `enable_config`      | Enable AWS Config module            | bool   | `true`       |
+| `enable_guardduty`   | Enable GuardDuty module             | bool   | `true`       |
+| `enable_detective`   | Enable Detective module             | bool   | `true`       |
+| `enable_securityhub` | Enable Security Hub module          | bool   | `true`       |
+| `common_tags`        | Common tags for all resources       | map    | `{}`         |
 
 See [variables.tf](./variables.tf) for complete variable documentation.
 
 ### Outputs
 
-| Output                    | Description                              |
-| ------------------------- | ---------------------------------------- |
-| `cloudtrail_trail_arn`    | ARN of the CloudTrail trail              |
-| `cloudtrail_bucket_name`  | Name of the CloudTrail S3 bucket         |
-| `config_recorder_name`    | Name of the AWS Config recorder          |
-| `config_bucket_name`      | Name of the Config S3 bucket             |
-| `guardduty_detector_id`   | ID of the GuardDuty detector             |
-| `detective_graph_id`      | ID of the Amazon Detective graph         |
-| `securityhub_account_arn` | ARN of the AWS Security Hub account      |
+| Output                    | Description                         |
+| ------------------------- | ----------------------------------- |
+| `cloudtrail_trail_arn`    | ARN of the CloudTrail trail         |
+| `cloudtrail_bucket_name`  | Name of the CloudTrail S3 bucket    |
+| `config_recorder_name`    | Name of the AWS Config recorder     |
+| `config_bucket_name`      | Name of the Config S3 bucket        |
+| `guardduty_detector_id`   | ID of the GuardDuty detector        |
+| `detective_graph_id`      | ID of the Amazon Detective graph    |
+| `securityhub_account_arn` | ARN of the AWS Security Hub account |
 
 See [outputs.tf](./outputs.tf) for complete output documentation.
 
@@ -218,20 +228,21 @@ This project supports remote state management using S3 and DynamoDB for state lo
 #### Option 1: Full Backend Configuration (Recommended)
 
 1. **Create S3 bucket and DynamoDB table** (one-time setup):
+
    ```bash
    # Set variables
    BUCKET_NAME="your-terraform-state-bucket"
    TABLE_NAME="terraform-state-lock"
    REGION="us-east-1"
-   
+
    # Create S3 bucket for state
    aws s3 mb s3://${BUCKET_NAME} --region ${REGION}
-   
+
    # Enable versioning (important for state history)
    aws s3api put-bucket-versioning \
      --bucket ${BUCKET_NAME} \
      --versioning-configuration Status=Enabled
-   
+
    # Enable encryption
    aws s3api put-bucket-encryption \
      --bucket ${BUCKET_NAME} \
@@ -242,13 +253,13 @@ This project supports remote state management using S3 and DynamoDB for state lo
          }
        }]
      }'
-   
+
    # Block public access
    aws s3api put-public-access-block \
      --bucket ${BUCKET_NAME} \
      --public-access-block-configuration \
        BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
-   
+
    # Create DynamoDB table for locking
    aws dynamodb create-table \
      --table-name ${TABLE_NAME} \
@@ -259,6 +270,7 @@ This project supports remote state management using S3 and DynamoDB for state lo
    ```
 
 2. **Configure backend** in `backend.tf`:
+
    ```hcl
    terraform {
      backend "s3" {
@@ -281,6 +293,7 @@ This project supports remote state management using S3 and DynamoDB for state lo
 For better security, use partial configuration to avoid hardcoding values:
 
 1. **Create backend configuration file** `backend-config.hcl`:
+
    ```hcl
    bucket         = "your-terraform-state-bucket"
    key            = "security-baseline/terraform.tfstate"
@@ -290,6 +303,7 @@ For better security, use partial configuration to avoid hardcoding values:
    ```
 
 2. **Update `backend.tf`** to use partial configuration:
+
    ```hcl
    terraform {
      backend "s3" {}
@@ -297,6 +311,7 @@ For better security, use partial configuration to avoid hardcoding values:
    ```
 
 3. **Initialize with backend config file**:
+
    ```bash
    terraform init -backend-config=backend-config.hcl
    ```
@@ -311,6 +326,7 @@ For better security, use partial configuration to avoid hardcoding values:
 For multiple environments, use separate state files:
 
 1. **Create environment-specific config files:**
+
    ```bash
    # backend-prod.hcl
    bucket         = "prod-terraform-state"
@@ -318,7 +334,7 @@ For multiple environments, use separate state files:
    region         = "us-east-1"
    encrypt        = true
    dynamodb_table = "prod-terraform-lock"
-   
+
    # backend-staging.hcl
    bucket         = "staging-terraform-state"
    key            = "security-baseline/staging.tfstate"
@@ -328,10 +344,11 @@ For multiple environments, use separate state files:
    ```
 
 2. **Initialize for specific environment:**
+
    ```bash
    # Production
    terraform init -backend-config=backend-prod.hcl
-   
+
    # Staging
    terraform init -backend-config=backend-staging.hcl
    ```
@@ -341,6 +358,7 @@ For multiple environments, use separate state files:
 If you have existing local state and want to migrate to remote backend:
 
 1. **Backup your local state:**
+
    ```bash
    cp terraform.tfstate terraform.tfstate.backup
    ```
@@ -348,6 +366,7 @@ If you have existing local state and want to migrate to remote backend:
 2. **Configure backend** (as shown above)
 
 3. **Initialize and migrate:**
+
    ```bash
    terraform init
    # Terraform will detect local state and ask if you want to migrate
@@ -355,10 +374,11 @@ If you have existing local state and want to migrate to remote backend:
    ```
 
 4. **Verify migration:**
+
    ```bash
    # Check remote state
    terraform state list
-   
+
    # Verify state is in S3
    aws s3 ls s3://your-terraform-state-bucket/security-baseline/
    ```
@@ -374,6 +394,7 @@ If you have existing local state and want to migrate to remote backend:
 If you're migrating from the monolithic structure to the modular structure with remote backend:
 
 1. **Backup current state:**
+
    ```bash
    terraform state pull > backup-pre-migration-$(date +%Y%m%d-%H%M%S).tfstate
    ```
@@ -381,6 +402,7 @@ If you're migrating from the monolithic structure to the modular structure with 
 2. **Configure remote backend** (as shown above)
 
 3. **Initialize with backend:**
+
    ```bash
    terraform init
    ```
@@ -392,16 +414,16 @@ If you're migrating from the monolithic structure to the modular structure with 
 
 The backend configuration supports these variables:
 
-| Variable         | Description                              | Required |
-| ---------------- | ---------------------------------------- | -------- |
-| `bucket`         | S3 bucket name for state storage         | Yes      |
-| `key`            | Path to state file within bucket         | Yes      |
-| `region`         | AWS region for S3 bucket                 | Yes      |
-| `encrypt`        | Enable server-side encryption            | Yes      |
-| `dynamodb_table` | DynamoDB table for state locking         | Yes      |
-| `kms_key_id`     | KMS key for encryption (optional)        | No       |
-| `profile`        | AWS profile to use (optional)            | No       |
-| `role_arn`       | IAM role to assume (optional)            | No       |
+| Variable         | Description                       | Required |
+| ---------------- | --------------------------------- | -------- |
+| `bucket`         | S3 bucket name for state storage  | Yes      |
+| `key`            | Path to state file within bucket  | Yes      |
+| `region`         | AWS region for S3 bucket          | Yes      |
+| `encrypt`        | Enable server-side encryption     | Yes      |
+| `dynamodb_table` | DynamoDB table for state locking  | Yes      |
+| `kms_key_id`     | KMS key for encryption (optional) | No       |
+| `profile`        | AWS profile to use (optional)     | No       |
+| `role_arn`       | IAM role to assume (optional)     | No       |
 
 ### Backend Best Practices
 
@@ -417,12 +439,14 @@ The backend configuration supports these variables:
 ### Troubleshooting Backend Issues
 
 **Issue:** `Error: Backend configuration changed`
+
 ```bash
 # Solution: Reconfigure backend
 terraform init -reconfigure
 ```
 
 **Issue:** `Error: Error acquiring the state lock`
+
 ```bash
 # Check who has the lock
 aws dynamodb get-item \
@@ -434,12 +458,14 @@ terraform force-unlock <LOCK_ID>
 ```
 
 **Issue:** `Error: Failed to get existing workspaces`
+
 ```bash
 # Solution: Verify S3 bucket exists and you have access
 aws s3 ls s3://your-terraform-state-bucket/
 ```
 
 **Issue:** State file not found in S3
+
 ```bash
 # Solution: Initialize backend first
 terraform init
@@ -451,6 +477,7 @@ terraform init -migrate-state
 ### Backend Security Considerations
 
 1. **S3 Bucket Policies:**
+
    ```json
    {
      "Version": "2012-10-17",
@@ -460,10 +487,7 @@ terraform init -migrate-state
          "Principal": {
            "AWS": "arn:aws:iam::ACCOUNT_ID:role/TerraformRole"
          },
-         "Action": [
-           "s3:GetObject",
-           "s3:PutObject"
-         ],
+         "Action": ["s3:GetObject", "s3:PutObject"],
          "Resource": "arn:aws:s3:::your-terraform-state-bucket/*"
        }
      ]
@@ -471,6 +495,7 @@ terraform init -migrate-state
    ```
 
 2. **DynamoDB Table Policies:**
+
    ```json
    {
      "Version": "2012-10-17",
@@ -544,6 +569,7 @@ go test -v -timeout 30m
 ```
 
 Tests verify:
+
 - Module structure completeness
 - Resource encapsulation
 - Variable propagation
@@ -569,6 +595,7 @@ Learn more about the AWS services deployed:
 ### Terraform Best Practices
 
 This project follows best practices from:
+
 - [Terraform Best Practices](https://www.terraform-best-practices.com/)
 - [Terraform Module Registry](https://registry.terraform.io/)
 
@@ -589,6 +616,7 @@ If you're migrating from the monolithic structure to the modular structure, see 
 ### IAM Permissions Required
 
 Deploying this baseline requires permissions for:
+
 - CloudTrail: Create trails, S3 buckets, KMS keys
 - Config: Create recorders, delivery channels, IAM roles
 - GuardDuty: Enable detector, configure organization
@@ -602,6 +630,7 @@ Deploying this baseline requires permissions for:
 ### Encryption
 
 All data at rest is encrypted:
+
 - S3 buckets use KMS encryption
 - CloudWatch Logs use KMS encryption
 - Each service has dedicated KMS keys with rotation enabled
@@ -651,11 +680,11 @@ Use individual modules in other projects:
 ```hcl
 module "cloudtrail" {
   source = "git::https://github.com/jsredmond/aws-security-baseline.git//modules/cloudtrail?ref=v1.0.0"
-  
+
   environment                    = "prod"
   cloudwatch_logs_retention_days = 365
   enable_s3_data_events          = true
-  
+
   common_tags = {
     Project = "MyProject"
   }
@@ -716,24 +745,28 @@ Future enhancements:
 ### Common Issues
 
 **Issue:** `Error: Module not installed`
+
 ```bash
 # Solution: Initialize Terraform
 terraform init
 ```
 
 **Issue:** `Error: Backend configuration changed`
+
 ```bash
 # Solution: Reconfigure backend
 terraform init -reconfigure
 ```
 
 **Issue:** `Error: Insufficient permissions`
+
 ```bash
 # Solution: Verify IAM permissions for your AWS credentials
 aws sts get-caller-identity
 ```
 
 **Issue:** Detective fails to enable
+
 ```bash
 # Solution: GuardDuty must be enabled for 48 hours first
 # Disable Detective temporarily:
@@ -748,7 +781,7 @@ For more troubleshooting, see [MIGRATION.md](./MIGRATION.md#troubleshooting).
 
 - **Issues:** [GitHub Issues](https://github.com/jsredmond/aws-security-baseline/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/jsredmond/aws-security-baseline/discussions)
-- **Documentation:** See module READMEs in `modules/` directory
+- **Documentation:** See module readmes in `modules/` directory
 
 ---
 

@@ -31,6 +31,7 @@ This module has been updated to support organization-wide deployment:
 2. **Output Values**: Exported graph ARN and ID for integration with other modules
 
 These enhancements enable:
+
 - Scalable deployment across multi-account AWS Organizations
 - Automatic Detective enablement for new accounts
 - Centralized security investigation across the organization
@@ -82,33 +83,33 @@ module "detective" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 1.0 |
-| aws | >= 5.0 |
-| random | >= 3.0 |
+| Name      | Version |
+| --------- | ------- |
+| terraform | >= 1.0  |
+| aws       | >= 5.0  |
+| random    | >= 3.0  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 5.0 |
-| random | >= 3.0 |
+| Name   | Version |
+| ------ | ------- |
+| aws    | >= 5.0  |
+| random | >= 3.0  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
-| is_organization_admin_account | Whether this account is the Detective delegated administrator for the organization | `bool` | `false` | no |
-| auto_enable_organization_members | Whether to automatically enable Detective for new organization members | `bool` | `true` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
+| Name                             | Description                                                                        | Type          | Default | Required |
+| -------------------------------- | ---------------------------------------------------------------------------------- | ------------- | ------- | :------: |
+| environment                      | Environment name (dev, staging, prod)                                              | `string`      | n/a     |   yes    |
+| is_organization_admin_account    | Whether this account is the Detective delegated administrator for the organization | `bool`        | `false` |    no    |
+| auto_enable_organization_members | Whether to automatically enable Detective for new organization members             | `bool`        | `true`  |    no    |
+| common_tags                      | Common tags to apply to all resources                                              | `map(string)` | `{}`    |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| graph_id | The ID of the Detective graph |
+| Name      | Description                    |
+| --------- | ------------------------------ |
+| graph_id  | The ID of the Detective graph  |
 | graph_arn | The ARN of the Detective graph |
 
 ## Prerequisites
@@ -183,6 +184,7 @@ Detective pricing is based on:
 2. **Data Analysis**: Per GB of data analyzed
 
 Pricing tiers:
+
 - First 1 TB/month: Standard rate
 - Next 4 TB/month: Reduced rate
 - Over 5 TB/month: Further reduced rate

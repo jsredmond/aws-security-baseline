@@ -5,6 +5,7 @@ This guide walks you through testing the AWS Security Baseline deployment.
 ## Prerequisites
 
 1. **AWS Credentials**: Ensure you have AWS credentials configured
+
    ```bash
    aws configure
    # OR
@@ -50,6 +51,7 @@ terraform init
 ```
 
 This will:
+
 - Initialize the local backend (state stored in `terraform.tfstate`)
 - Download required providers (AWS, Random)
 - Initialize all modules
@@ -69,11 +71,13 @@ terraform plan -out=tfplan
 ```
 
 This will show you:
+
 - **42 resources** to be created (with Detective disabled)
 - All CloudTrail, Config, GuardDuty, and Security Hub resources
 - S3 buckets, KMS keys, IAM roles, etc.
 
 **Review the plan carefully** to ensure:
+
 - Resource names match your expectations
 - Tags are correct
 - No unexpected resources
@@ -105,6 +109,7 @@ terraform output
 ```
 
 You should see outputs for:
+
 - CloudTrail trail ARN, bucket name, KMS key ID
 - Config recorder name, bucket name, delivery channel ID
 - GuardDuty detector ID
@@ -188,6 +193,7 @@ aws securityhub get-enabled-standards
 ## Step 8: Monitor Costs
 
 Check AWS Cost Explorer or Billing Dashboard for:
+
 - S3 storage costs (minimal initially)
 - CloudTrail event logging costs
 - Config recording costs
@@ -195,6 +201,7 @@ Check AWS Cost Explorer or Billing Dashboard for:
 - Security Hub costs
 
 **Estimated Monthly Cost** (us-east-1, light usage):
+
 - CloudTrail: $2-5
 - AWS Config: $2-10
 - GuardDuty: $4-10
@@ -213,6 +220,7 @@ terraform destroy
 Type `yes` when prompted.
 
 **⚠️ WARNING**: This will delete:
+
 - All S3 buckets (if empty)
 - All KMS keys (scheduled for deletion)
 - All CloudTrail trails
@@ -272,7 +280,6 @@ See `backend.tf` for detailed instructions.
 
 ## Support
 
-- Review module READMEs in `modules/` directory
+- Review module readmes in `modules/` directory
 - Check `MIGRATION.md` for migration guidance
 - Consult AWS documentation for service-specific issues
-

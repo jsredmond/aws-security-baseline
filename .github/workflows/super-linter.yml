@@ -38,3 +38,5 @@ jobs:
           VALIDATE_GO_MODULES: false
           # Disable JSCPD - test scripts intentionally share similar validation patterns
           VALIDATE_JSCPD: false
+          # Disable JSON_PRETTIER - Biome handles JSON formatting with tabs
+          VALIDATE_JSON_PRETTIER: false

@@ -34,5 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Disable Go validation to avoid false positives from test directory
           VALIDATE_GO: false
+          # Disable Go modules linter - tests are in subdirectory
+          VALIDATE_GO_MODULES: false
           # Disable JSCPD - test scripts intentionally share similar validation patterns
           VALIDATE_JSCPD: false

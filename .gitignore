@@ -29,6 +29,9 @@ override.tf.json
 # example: *tfplan*
 .terraform.lock.hcl
 
+# Backend configuration files (may contain sensitive information)
+backend-config.hcl
+
 # Kiro steering and spec files
 .kiro/steering/
 .kiro/specs/

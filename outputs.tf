@@ -135,3 +135,44 @@ output "securityhub_standards_subscriptions" {
   description = "Map of Security Hub standards subscription ARNs"
   value       = var.enable_securityhub ? module.securityhub[0].standards_subscriptions : null
 }
+
+# IAM Access Analyzer Outputs
+
+output "accessanalyzer_external_analyzer_arn" {
+  description = "ARN of the external access analyzer"
+  value       = var.enable_accessanalyzer ? module.accessanalyzer[0].external_analyzer_arn : null
+}
+
+output "accessanalyzer_external_analyzer_id" {
+  description = "ID of the external access analyzer"
+  value       = var.enable_accessanalyzer ? module.accessanalyzer[0].external_analyzer_id : null
+}
+
+output "accessanalyzer_unused_analyzer_arn" {
+  description = "ARN of the unused access analyzer"
+  value       = var.enable_accessanalyzer ? module.accessanalyzer[0].unused_analyzer_arn : null
+}
+
+# Amazon Inspector Outputs
+
+output "inspector_account_id" {
+  description = "AWS account ID where Inspector is enabled"
+  value       = var.enable_inspector ? module.inspector[0].account_id : null
+}
+
+output "inspector_enabled_resource_types" {
+  description = "List of resource types enabled for Inspector scanning"
+  value       = var.enable_inspector ? module.inspector[0].enabled_resource_types : null
+}
+
+# Amazon Macie Outputs
+
+output "macie_account_id" {
+  description = "The unique identifier for the Macie account"
+  value       = var.enable_macie ? module.macie[0].macie_account_id : null
+}
+
+output "macie_service_role_arn" {
+  description = "ARN of the service-linked role for Macie"
+  value       = var.enable_macie ? module.macie[0].service_role_arn : null
+}

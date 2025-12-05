@@ -58,3 +58,35 @@ module "securityhub" {
   enable_pci_dss_standard          = var.securityhub_enable_pci_dss_standard
   enable_aws_foundational_standard = var.securityhub_enable_aws_foundational_standard
 }
+
+# IAM Access Analyzer Module
+module "accessanalyzer" {
+  count  = var.enable_accessanalyzer ? 1 : 0
+  source = "./modules/accessanalyzer"
+
+  environment                   = var.environment
+  is_organization_analyzer      = var.accessanalyzer_is_organization
+  enable_unused_access_analyzer = var.accessanalyzer_enable_unused_access
+  unused_access_age_days        = var.accessanalyzer_unused_access_age_days
+  common_tags                   = var.common_tags
+}
+
+# Amazon Inspector Module
+module "inspector" {
+  count  = var.enable_inspector ? 1 : 0
+  source = "./modules/inspector"
+
+  environment    = var.environment
+  resource_types = var.inspector_resource_types
+  common_tags    = var.common_tags
+}
+
+# Amazon Macie Module
+module "macie" {
+  count  = var.enable_macie ? 1 : 0
+  source = "./modules/macie"
+
+  environment                  = var.environment
+  finding_publishing_frequency = var.macie_finding_publishing_frequency
+  common_tags                  = var.common_tags
+}

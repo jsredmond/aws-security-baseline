@@ -9,8 +9,3 @@ output "enabled_resource_types" {
   description = "List of resource types enabled for Inspector scanning"
   value       = var.resource_types
 }
-
-output "region" {
-  description = "AWS region where Inspector is enabled"
-  value       = data.aws_region.current.id
-}

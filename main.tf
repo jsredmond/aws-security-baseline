@@ -76,9 +76,7 @@ module "inspector" {
   count  = var.enable_inspector ? 1 : 0
   source = "./modules/inspector"
 
-  environment    = var.environment
   resource_types = var.inspector_resource_types
-  common_tags    = var.common_tags
 }
 
 # Amazon Macie Module
@@ -86,7 +84,5 @@ module "macie" {
   count  = var.enable_macie ? 1 : 0
   source = "./modules/macie"
 
-  environment                  = var.environment
   finding_publishing_frequency = var.macie_finding_publishing_frequency
-  common_tags                  = var.common_tags
 }

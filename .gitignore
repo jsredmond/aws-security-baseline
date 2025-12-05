@@ -35,3 +35,6 @@ backend-config.hcl
 # Kiro steering and spec files
 .kiro/steering/
 .kiro/specs/
+
+# Kiro MCP configuration (user-specific)
+.kiro/settings/mcp.json

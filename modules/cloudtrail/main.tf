@@ -50,7 +50,7 @@ resource "aws_kms_key" "cloudwatch" {
         Sid    = "Allow CloudWatch Logs"
         Effect = "Allow"
         Principal = {
-          Service = "logs.${data.aws_region.current.name}.amazonaws.com"
+          Service = "logs.${data.aws_region.current.id}.amazonaws.com"
         }
         Action = [
           "kms:Encrypt*",
@@ -254,7 +254,7 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Resource = aws_s3_bucket.cloudtrail.arn
         Condition = {
           StringEquals = {
-            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
           }
         }
       },
@@ -269,7 +269,7 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Condition = {
           StringEquals = {
             "s3:x-amz-acl"  = "bucket-owner-full-control"
-            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
           }
         }
       }
@@ -288,7 +288,7 @@ resource "aws_cloudwatch_log_group" "cloudtrail" {
 
 # CloudWatch Log Stream
 resource "aws_cloudwatch_log_stream" "cloudtrail" {
-  name           = "${data.aws_caller_identity.current.account_id}_CloudTrail_${data.aws_region.current.name}"
+  name           = "${data.aws_caller_identity.current.account_id}_CloudTrail_${data.aws_region.current.id}"
   log_group_name = aws_cloudwatch_log_group.cloudtrail.name
 }
 
@@ -378,7 +378,7 @@ resource "aws_sns_topic_policy" "cloudtrail" {
         Resource = aws_sns_topic.cloudtrail.arn
         Condition = {
           StringEquals = {
-            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
           }
         }
       }

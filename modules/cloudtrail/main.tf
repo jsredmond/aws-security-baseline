@@ -252,6 +252,11 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         }
         Action   = "s3:GetBucketAcl"
         Resource = aws_s3_bucket.cloudtrail.arn
+        Condition = {
+          StringEquals = {
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
+          }
+        }
       },
       {
         Sid    = "AWSCloudTrailWrite"
@@ -263,7 +268,8 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
         Resource = "${aws_s3_bucket.cloudtrail.arn}/AWSLogs/${data.aws_caller_identity.current.account_id}/*"
         Condition = {
           StringEquals = {
-            "s3:x-amz-acl" = "bucket-owner-full-control"
+            "s3:x-amz-acl"  = "bucket-owner-full-control"
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
           }
         }
       }
@@ -370,6 +376,11 @@ resource "aws_sns_topic_policy" "cloudtrail" {
         }
         Action   = "SNS:Publish"
         Resource = aws_sns_topic.cloudtrail.arn
+        Condition = {
+          StringEquals = {
+            "aws:SourceArn" = "arn:aws:cloudtrail:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:trail/${var.environment}-${local.service_name}"
+          }
+        }
       }
     ]
   })
@@ -377,12 +388,13 @@ resource "aws_sns_topic_policy" "cloudtrail" {
 
 # CloudTrail trail
 resource "aws_cloudtrail" "main" {
-  name                       = "${var.environment}-${local.service_name}"
-  s3_bucket_name             = aws_s3_bucket.cloudtrail.id
-  is_multi_region_trail      = true
-  enable_log_file_validation = true
-  sns_topic_name             = aws_sns_topic.cloudtrail.name
-  kms_key_id                 = aws_kms_key.cloudtrail.arn
+  name                          = "${var.environment}-${local.service_name}"
+  s3_bucket_name                = aws_s3_bucket.cloudtrail.id
+  is_multi_region_trail         = true
+  include_global_service_events = true
+  enable_log_file_validation    = true
+  sns_topic_name                = aws_sns_topic.cloudtrail.name
+  kms_key_id                    = aws_kms_key.cloudtrail.arn
 
   cloud_watch_logs_role_arn  = aws_iam_role.cloudwatch.arn
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.cloudtrail.arn}:*"
@@ -398,6 +410,14 @@ resource "aws_cloudtrail" "main" {
         values = ["arn:aws:s3"]
       }
     }
+  }
+
+  insight_selector {
+    insight_type = "ApiCallRateInsight"
+  }
+
+  insight_selector {
+    insight_type = "ApiErrorRateInsight"
   }
 
   tags = local.common_tags

@@ -169,11 +169,25 @@ Ensure the following AWS service quotas are sufficient:
 
 5. **Dependencies**: The module uses explicit `depends_on` to ensure resources are created in the correct order, particularly for IAM roles and S3 bucket policies.
 
+## Recent Security Enhancements
+
+This module has been updated to implement AWS security best practices:
+
+1. **Enhanced S3 Bucket Policy**: Added `aws:SourceArn` condition to prevent unauthorized CloudTrail logs from other accounts
+2. **Enhanced SNS Topic Policy**: Added `aws:SourceArn` condition to prevent unauthorized SNS access
+3. **Global Service Events**: Explicitly enabled `include_global_service_events` to ensure IAM and other global service events are captured
+4. **CloudTrail Insights**: Enabled both `ApiCallRateInsight` and `ApiErrorRateInsight` for anomaly detection
+
+These changes improve security posture by:
+- Preventing confused deputy attacks on S3 and SNS resources
+- Ensuring comprehensive logging of global AWS services
+- Detecting unusual API activity patterns automatically
+
 ## Limitations
 
 - The module does not support organization trails (trails that log events for all accounts in an AWS Organization)
 - S3 bucket replication is not included in this module
-- CloudTrail Insights is not enabled by default
+- MFA delete for S3 bucket must be enabled manually via AWS CLI by root account user
 
 ## Version Requirements
 

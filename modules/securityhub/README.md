@@ -12,8 +12,36 @@ AWS Security Hub provides a comprehensive view of security alerts and compliance
 - Optional subscription to CIS AWS Foundations Benchmark v1.4.0
 - Optional subscription to PCI DSS v3.2.1
 - Optional subscription to AWS Foundational Security Best Practices v1.0.0
+- Product integrations with GuardDuty, Inspector, and Macie
+- Control finding generator to reduce duplicate findings
+- Auto-enable controls for new security checks
 - Configurable standards based on compliance requirements
 - Consistent tagging across all resources
+
+## Recent Security Enhancements
+
+This module has been updated to implement AWS Security Hub best practices:
+
+1. **Control Finding Generator**: Set to `SECURITY_CONTROL` to consolidate findings
+   - Reduces duplicate findings from multiple standards
+   - Provides cleaner, more actionable security dashboard
+   - Improves finding prioritization and remediation workflow
+
+2. **Auto-Enable Controls**: Automatically enables new security controls as they're released
+   - Ensures continuous security coverage
+   - Reduces manual configuration overhead
+   - Keeps security posture current with AWS recommendations
+
+3. **Product Integrations**: Added support for GuardDuty, Inspector, and Macie integrations
+   - Aggregates findings from multiple AWS security services
+   - Provides centralized security findings dashboard
+   - Enables comprehensive security monitoring
+
+These enhancements provide:
+- Reduced finding noise and improved signal-to-noise ratio
+- Automatic adoption of new security controls
+- Comprehensive security findings aggregation
+- Better security posture visibility
 
 ## Usage
 
@@ -35,6 +63,11 @@ module "securityhub" {
   enable_cis_standard              = true
   enable_pci_dss_standard          = true
   enable_aws_foundational_standard = false
+  
+  # Enable product integrations
+  enable_guardduty_integration     = true
+  enable_inspector_integration     = true
+  enable_macie_integration         = false
 }
 ```
 
@@ -80,6 +113,9 @@ module "securityhub" {
 | enable_cis_standard | Enable CIS AWS Foundations Benchmark standard | `bool` | `true` | no |
 | enable_pci_dss_standard | Enable PCI DSS standard | `bool` | `false` | no |
 | enable_aws_foundational_standard | Enable AWS Foundational Security Best Practices standard | `bool` | `true` | no |
+| enable_guardduty_integration | Enable GuardDuty product integration with Security Hub | `bool` | `true` | no |
+| enable_inspector_integration | Enable Inspector product integration with Security Hub | `bool` | `true` | no |
+| enable_macie_integration | Enable Macie product integration with Security Hub | `bool` | `false` | no |
 
 ## Outputs
 

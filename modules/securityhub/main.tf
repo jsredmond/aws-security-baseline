@@ -16,7 +16,9 @@ locals {
 
 # Enable Security Hub
 resource "aws_securityhub_account" "main" {
-  enable_default_standards = false
+  enable_default_standards  = false
+  control_finding_generator = "SECURITY_CONTROL"
+  auto_enable_controls      = true
 }
 
 # Subscribe to security standards
@@ -24,6 +26,33 @@ resource "aws_securityhub_standards_subscription" "standards" {
   for_each = local.enabled_standards
 
   standards_arn = each.value
+
+  depends_on = [aws_securityhub_account.main]
+}
+
+# GuardDuty product integration
+resource "aws_securityhub_product_subscription" "guardduty" {
+  count = var.enable_guardduty_integration ? 1 : 0
+
+  product_arn = "arn:aws:securityhub:${data.aws_region.current.id}::product/aws/guardduty"
+
+  depends_on = [aws_securityhub_account.main]
+}
+
+# Inspector product integration
+resource "aws_securityhub_product_subscription" "inspector" {
+  count = var.enable_inspector_integration ? 1 : 0
+
+  product_arn = "arn:aws:securityhub:${data.aws_region.current.id}::product/aws/inspector"
+
+  depends_on = [aws_securityhub_account.main]
+}
+
+# Macie product integration
+resource "aws_securityhub_product_subscription" "macie" {
+  count = var.enable_macie_integration ? 1 : 0
+
+  product_arn = "arn:aws:securityhub:${data.aws_region.current.id}::product/aws/macie"
 
   depends_on = [aws_securityhub_account.main]
 }

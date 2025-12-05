@@ -150,6 +150,31 @@ For organization-wide deployment:
 - GuardDuty detector: 1 per region per account
 - Member accounts: Up to 5,000 per organization
 
+## Recent Security Enhancements
+
+This module has been updated to enable additional GuardDuty protection plans:
+
+1. **Runtime Monitoring**: Monitors operating system-level events on EC2 instances, EKS clusters, and ECS Fargate tasks
+   - Automated agent management for EC2, EKS, and ECS Fargate
+   - Detects runtime threats like malware, unauthorized access, and suspicious behavior
+   
+2. **Lambda Protection**: Monitors Lambda network activity logs
+   - Detects threats to Lambda functions including cryptomining and data exfiltration
+   - Essential for serverless workload security
+
+3. **RDS Protection**: Analyzes RDS login activity
+   - Detects anomalous login patterns and brute force attacks
+   - Critical for database security monitoring
+
+4. **EKS Runtime Monitoring**: Enhanced EKS threat detection
+   - Monitors both control plane (audit logs) and data plane (runtime) activities
+   - Enables detection of multi-stage attacks across EKS layers
+
+These enhancements provide:
+- Deeper visibility into workload security across compute types
+- Detection of runtime threats that foundational data sources miss
+- Comprehensive coverage for modern cloud-native architectures
+
 ## Data Sources
 
 GuardDuty monitors the following data sources:
@@ -160,6 +185,10 @@ GuardDuty monitors the following data sources:
 4. **S3 Data Events**: S3 bucket activity (configurable)
 5. **Kubernetes Audit Logs**: EKS cluster activity (configurable)
 6. **Malware Protection**: EC2 instance scanning (configurable)
+7. **Runtime Monitoring**: OS-level events on EC2, EKS, ECS (enabled)
+8. **Lambda Protection**: Lambda network activity (enabled)
+9. **RDS Protection**: RDS login activity (enabled)
+10. **EKS Runtime Monitoring**: Enhanced EKS monitoring (enabled)
 
 ## Finding Publishing Frequency
 

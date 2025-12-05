@@ -15,3 +15,21 @@ variable "enable_aws_foundational_standard" {
   type        = bool
   default     = true
 }
+
+variable "enable_guardduty_integration" {
+  description = "Enable GuardDuty product integration with Security Hub"
+  type        = bool
+  default     = true
+}
+
+variable "enable_inspector_integration" {
+  description = "Enable Inspector product integration with Security Hub"
+  type        = bool
+  default     = true
+}
+
+variable "enable_macie_integration" {
+  description = "Enable Macie product integration with Security Hub"
+  type        = bool
+  default     = false
+}

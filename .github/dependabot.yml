@@ -9,6 +9,10 @@ updates:
       time: "09:00"
       timezone: "UTC"
     open-pull-requests-limit: 10
+    cooldown:
+      semver-major: 30
+      semver-minor: 7
+      semver-patch: 3
     groups:
       github-actions:
         patterns:

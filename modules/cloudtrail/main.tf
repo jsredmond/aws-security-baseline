@@ -184,7 +184,9 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
     id     = "log-expiration"
     status = "Enabled"
 
-    filter {}
+    filter {
+      prefix = ""
+    }
 
     expiration {
       days = var.s3_lifecycle_expiration_days

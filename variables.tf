@@ -59,12 +59,6 @@ variable "enable_securityhub" {
 
 # CloudTrail Module Variables
 
-variable "cloudtrail_cloudwatch_logs_retention_days" {
-  description = "Number of days to retain CloudWatch logs for CloudTrail"
-  type        = number
-  default     = 365
-}
-
 variable "cloudtrail_s3_lifecycle_expiration_days" {
   description = "Number of days before S3 objects expire in CloudTrail bucket"
   type        = number

@@ -184,6 +184,10 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudtrail" {
     id     = "log-expiration"
     status = "Enabled"
 
+    filter {
+      prefix = ""
+    }
+
     expiration {
       days = var.s3_lifecycle_expiration_days
     }
@@ -208,28 +212,30 @@ resource "aws_s3_bucket_logging" "cloudtrail" {
 }
 
 # S3 bucket replication configuration
-resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
-
-  rule {
-    id     = "replication-rule"
-    status = "Enabled"
-
-    delete_marker_replication {
-      status = "Disabled"
-    }
-
-    destination {
-      bucket        = "arn:aws:s3:::target-replication-bucket"
-      storage_class = "STANDARD"
-    }
-
-    filter {
-      prefix = ""
-    }
-  }
-}
+# Note: Replication is optional and requires a destination bucket and IAM role
+# Uncomment and configure if cross-region replication is needed
+# resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
+#   bucket = aws_s3_bucket.cloudtrail.id
+#   role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
+#
+#   rule {
+#     id     = "replication-rule"
+#     status = "Enabled"
+#
+#     delete_marker_replication {
+#       status = "Disabled"
+#     }
+#
+#     destination {
+#       bucket        = "arn:aws:s3:::target-replication-bucket"
+#       storage_class = "STANDARD"
+#     }
+#
+#     filter {
+#       prefix = ""
+#     }
+#   }
+# }
 
 # S3 bucket policy for CloudTrail
 resource "aws_s3_bucket_policy" "cloudtrail" {
@@ -268,7 +274,7 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 # CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = local.cloudwatch_log_name
-  retention_in_days = var.cloudwatch_logs_retention_days
+  retention_in_days = 365 # Minimum 1 year retention for compliance (CKV_AWS_338)
   kms_key_id        = aws_kms_key.cloudwatch.arn
 
   tags = local.common_tags

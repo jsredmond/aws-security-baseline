@@ -35,3 +35,9 @@ backend-config.hcl
 # Kiro steering and spec files
 .kiro/steering/
 .kiro/specs/
+
+# Kiro MCP configuration (user-specific)
+.kiro/settings/mcp.json
+
+# Audit directory (temporary audit scripts and outputs)
+audit/

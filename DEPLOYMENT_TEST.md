@@ -272,7 +272,7 @@ See `backend.tf` for detailed instructions.
 
 ## Support
 
-- Review module READMEs in `modules/` directory
+- Review module readmes in `modules/` directory
 - Check `MIGRATION.md` for migration guidance
 - Consult AWS documentation for service-specific issues
 

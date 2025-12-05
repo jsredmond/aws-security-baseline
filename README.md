@@ -748,7 +748,7 @@ For more troubleshooting, see [MIGRATION.md](./MIGRATION.md#troubleshooting).
 
 - **Issues:** [GitHub Issues](https://github.com/jsredmond/aws-security-baseline/issues)
 - **Discussions:** [GitHub Discussions](https://github.com/jsredmond/aws-security-baseline/discussions)
-- **Documentation:** See module READMEs in `modules/` directory
+- **Documentation:** See module readmes in `modules/` directory
 
 ---
 

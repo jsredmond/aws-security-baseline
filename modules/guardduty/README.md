@@ -157,7 +157,7 @@ This module has been updated to enable additional GuardDuty protection plans:
 1. **Runtime Monitoring**: Monitors operating system-level events on EC2 instances, EKS clusters, and ECS Fargate tasks
    - Automated agent management for EC2, EKS, and ECS Fargate
    - Detects runtime threats like malware, unauthorized access, and suspicious behavior
-   
+
 2. **Lambda Protection**: Monitors Lambda network activity logs
    - Detects threats to Lambda functions including cryptomining and data exfiltration
    - Essential for serverless workload security

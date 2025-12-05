@@ -212,28 +212,30 @@ resource "aws_s3_bucket_logging" "cloudtrail" {
 }
 
 # S3 bucket replication configuration
-resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
-  bucket = aws_s3_bucket.cloudtrail.id
-  role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
-
-  rule {
-    id     = "replication-rule"
-    status = "Enabled"
-
-    delete_marker_replication {
-      status = "Disabled"
-    }
-
-    destination {
-      bucket        = "arn:aws:s3:::target-replication-bucket"
-      storage_class = "STANDARD"
-    }
-
-    filter {
-      prefix = ""
-    }
-  }
-}
+# Note: Replication is optional and requires a destination bucket and IAM role
+# Uncomment and configure if cross-region replication is needed
+# resource "aws_s3_bucket_replication_configuration" "cloudtrail" {
+#   bucket = aws_s3_bucket.cloudtrail.id
+#   role   = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/s3-replication-role"
+#
+#   rule {
+#     id     = "replication-rule"
+#     status = "Enabled"
+#
+#     delete_marker_replication {
+#       status = "Disabled"
+#     }
+#
+#     destination {
+#       bucket        = "arn:aws:s3:::target-replication-bucket"
+#       storage_class = "STANDARD"
+#     }
+#
+#     filter {
+#       prefix = ""
+#     }
+#   }
+# }
 
 # S3 bucket policy for CloudTrail
 resource "aws_s3_bucket_policy" "cloudtrail" {

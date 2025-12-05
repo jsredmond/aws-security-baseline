@@ -153,6 +153,6 @@ Refer to [Amazon Macie Pricing](https://aws.amazon.com/macie/pricing/)
 
 - Macie automatically creates a service-linked role
 - Findings are retained for 90 days
-- Custom data identifiers use regex patterns
+- Custom data identifiers use regular expression patterns
 - Supports multi-account management via Organizations
 - Can export findings to S3 for long-term retention

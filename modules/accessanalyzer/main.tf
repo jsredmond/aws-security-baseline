@@ -1,14 +1,8 @@
 # IAM Access Analyzer Module - Main Resources
 # This module deploys AWS IAM Access Analyzer for identifying external access to resources
 
-# Data sources for account ID and region
+# Data sources for account ID
 data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
-# Random ID for unique naming
-resource "random_id" "suffix" {
-  byte_length = 8
-}
 
 # Locals for computed values
 locals {
@@ -38,7 +32,7 @@ resource "aws_accessanalyzer_analyzer" "unused" {
   count = var.enable_unused_access_analyzer ? 1 : 0
 
   analyzer_name = "${var.environment}-unused-access-analyzer"
-  type          = var.is_organization_analyzer ? "ORGANIZATION_UNUSED_ACCESS" : "ACCOUNT_UNUSED_ACCESS"
+  type          = "ACCOUNT_UNUSED_ACCESS"
 
   configuration {
     unused_access {

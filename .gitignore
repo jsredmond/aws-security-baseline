@@ -38,3 +38,6 @@ backend-config.hcl
 
 # Kiro MCP configuration (user-specific)
 .kiro/settings/mcp.json
+
+# Audit directory (temporary audit scripts and outputs)
+audit/

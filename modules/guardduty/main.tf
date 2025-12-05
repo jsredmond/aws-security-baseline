@@ -46,6 +46,54 @@ resource "aws_guardduty_detector" "main" {
   tags = local.common_tags
 }
 
+# GuardDuty Runtime Monitoring (EC2, EKS, ECS Fargate)
+resource "aws_guardduty_detector_feature" "runtime_monitoring" {
+  detector_id = aws_guardduty_detector.main.id
+  name        = "RUNTIME_MONITORING"
+  status      = "ENABLED"
+
+  additional_configuration {
+    name   = "EKS_ADDON_MANAGEMENT"
+    status = "ENABLED"
+  }
+
+  additional_configuration {
+    name   = "ECS_FARGATE_AGENT_MANAGEMENT"
+    status = "ENABLED"
+  }
+
+  additional_configuration {
+    name   = "EC2_AGENT_MANAGEMENT"
+    status = "ENABLED"
+  }
+}
+
+# GuardDuty Lambda Protection
+resource "aws_guardduty_detector_feature" "lambda_protection" {
+  detector_id = aws_guardduty_detector.main.id
+  name        = "LAMBDA_NETWORK_LOGS"
+  status      = "ENABLED"
+}
+
+# GuardDuty RDS Protection
+resource "aws_guardduty_detector_feature" "rds_protection" {
+  detector_id = aws_guardduty_detector.main.id
+  name        = "RDS_LOGIN_EVENTS"
+  status      = "ENABLED"
+}
+
+# GuardDuty EKS Runtime Monitoring
+resource "aws_guardduty_detector_feature" "eks_runtime_monitoring" {
+  detector_id = aws_guardduty_detector.main.id
+  name        = "EKS_RUNTIME_MONITORING"
+  status      = "ENABLED"
+
+  additional_configuration {
+    name   = "EKS_ADDON_MANAGEMENT"
+    status = "ENABLED"
+  }
+}
+
 # GuardDuty Organization Configuration (conditional)
 resource "aws_guardduty_organization_configuration" "main" {
   count = var.is_organization_admin_account ? 1 : 0

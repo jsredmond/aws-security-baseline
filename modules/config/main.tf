@@ -29,8 +29,7 @@ locals {
 
 # KMS key for AWS Config encryption
 resource "aws_kms_key" "config" {
-  description = "KMS key for AWS Config encryption"
-  #checkov:skip=CKV_AWS_33: wildcard principal is allowed for internal config key
+  description             = "KMS key for AWS Config encryption"
   deletion_window_in_days = var.kms_key_deletion_window
   enable_key_rotation     = true
 
@@ -70,7 +69,7 @@ resource "aws_kms_key" "config" {
         Sid    = "AllowAccountUsage"
         Effect = "Allow"
         Principal = {
-          AWS = "*"
+          AWS = "arn:aws:iam::${local.account_id}:root"
         }
         Action = [
           "kms:Encrypt",
@@ -80,6 +79,14 @@ resource "aws_kms_key" "config" {
           "kms:DescribeKey"
         ]
         Resource = "*"
+        Condition = {
+          StringEquals = {
+            "kms:ViaService" = [
+              "s3.${local.region}.amazonaws.com",
+              "config.${local.region}.amazonaws.com"
+            ]
+          }
+        }
       }
     ]
   })
@@ -166,6 +173,60 @@ resource "aws_s3_bucket_notification" "config" {
   eventbridge = true
 }
 
+# S3 bucket policy for AWS Config service
+resource "aws_s3_bucket_policy" "config" {
+  bucket = aws_s3_bucket.config.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AWSConfigBucketPermissionsCheck"
+        Effect = "Allow"
+        Principal = {
+          Service = "config.amazonaws.com"
+        }
+        Action   = "s3:GetBucketAcl"
+        Resource = aws_s3_bucket.config.arn
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Sid    = "AWSConfigBucketExistenceCheck"
+        Effect = "Allow"
+        Principal = {
+          Service = "config.amazonaws.com"
+        }
+        Action   = "s3:ListBucket"
+        Resource = aws_s3_bucket.config.arn
+        Condition = {
+          StringEquals = {
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      },
+      {
+        Sid    = "AWSConfigBucketDelivery"
+        Effect = "Allow"
+        Principal = {
+          Service = "config.amazonaws.com"
+        }
+        Action   = "s3:PutObject"
+        Resource = "${aws_s3_bucket.config.arn}/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl"      = "bucket-owner-full-control"
+            "aws:SourceAccount" = data.aws_caller_identity.current.account_id
+          }
+        }
+      }
+    ]
+  })
+}
+
 # S3 bucket replication configuration
 # Note: Replication is optional and requires a destination bucket and IAM role
 # Uncomment and configure if cross-region replication is needed
@@ -222,17 +283,35 @@ resource "aws_iam_role_policy" "config_bucket" {
     Version = "2012-10-17"
     Statement = [
       {
+        Sid    = "AWSConfigBucketPermissions"
         Effect = "Allow"
         Action = [
-          "s3:*"
+          "s3:GetBucketAcl",
+          "s3:GetBucketLocation"
         ]
-        Resource = [
-          aws_s3_bucket.config.arn,
-          "${aws_s3_bucket.config.arn}/*"
+        Resource = aws_s3_bucket.config.arn
+      },
+      {
+        Sid    = "AWSConfigObjectPermissions"
+        Effect = "Allow"
+        Action = [
+          "s3:PutObject"
         ]
+        Resource = "${aws_s3_bucket.config.arn}/*"
+        Condition = {
+          StringEquals = {
+            "s3:x-amz-acl" = "bucket-owner-full-control"
+          }
+        }
       }
     ]
   })
+}
+
+# Attach AWS managed policy for Config service
+resource "aws_iam_role_policy_attachment" "config_policy" {
+  role       = aws_iam_role.config.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWS_ConfigRole"
 }
 
 # AWS Config configuration recorder

@@ -16,17 +16,52 @@ Amazon Detective makes it easy to analyze, investigate, and quickly identify the
 - **Automated graph creation**: Deploys Detective behavior graph
 - **GuardDuty integration**: Analyzes GuardDuty findings
 - **Visual investigation**: Provides interactive visualizations
+- **Organization support**: Auto-enable for new organization members
 - **Tagging support**: Apply custom tags to all resources
+
+## Recent Security Enhancements
+
+This module has been updated to support organization-wide deployment:
+
+1. **Organization Configuration**: Added support for Detective delegated administrator accounts
+   - Auto-enrollment of new organization member accounts
+   - Centralized management of Detective across the organization
+   - Consistent security investigation capabilities across all accounts
+
+2. **Output Values**: Exported graph ARN and ID for integration with other modules
+
+These enhancements enable:
+- Scalable deployment across multi-account AWS Organizations
+- Automatic Detective enablement for new accounts
+- Centralized security investigation across the organization
 
 ## Usage
 
-### Basic Configuration
+### Standalone Account
 
 ```hcl
 module "detective" {
   source = "./modules/detective"
 
-  environment = "prod"
+  environment                      = "prod"
+  is_organization_admin_account    = false
+
+  common_tags = {
+    Project = "security-baseline"
+    Owner   = "security-team"
+  }
+}
+```
+
+### Organization Admin Account
+
+```hcl
+module "detective" {
+  source = "./modules/detective"
+
+  environment                      = "prod"
+  is_organization_admin_account    = true
+  auto_enable_organization_members = true
 
   common_tags = {
     Project = "security-baseline"
@@ -65,6 +100,8 @@ module "detective" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
+| is_organization_admin_account | Whether this account is the Detective delegated administrator for the organization | `bool` | `false` | no |
+| auto_enable_organization_members | Whether to automatically enable Detective for new organization members | `bool` | `true` | no |
 | common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
 
 ## Outputs

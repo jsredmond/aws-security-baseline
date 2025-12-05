@@ -163,6 +163,21 @@ Ensure the following AWS service quotas are sufficient:
 
 6. **S3 Replication**: The module includes S3 replication configuration. You'll need to update the replication role ARN and target bucket ARN to match your environment, or remove this resource if replication is not needed.
 
+## Recent Security Enhancements
+
+This module has been updated to implement AWS security best practices:
+
+1. **Least Privilege IAM Policy**: Replaced overly permissive `s3:*` wildcard with specific S3 actions (GetBucketAcl, GetBucketLocation, PutObject)
+2. **AWS Managed Policy**: Added AWS_ConfigRole managed policy attachment for proper resource discovery and recording
+3. **S3 Bucket Policy**: Added explicit bucket policy with `aws:SourceAccount` conditions to prevent unauthorized access
+4. **Refined KMS Key Policy**: Removed wildcard principal and added service-specific conditions for better access control
+
+These changes improve security posture by:
+- Enforcing least privilege access for the Config IAM role
+- Ensuring Config can properly discover and record all AWS resource types
+- Preventing confused deputy attacks on S3 bucket
+- Restricting KMS key usage to specific AWS services
+
 ## Limitations
 
 - Only one configuration recorder is allowed per region

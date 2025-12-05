@@ -24,7 +24,7 @@ A modular Terraform implementation to bootstrap security best practices in AWS e
 
 This project follows a modular architecture where each AWS security service is encapsulated in its own reusable module:
 
-```
+```text
 .
 ├── main.tf                    # Root module - orchestrates all services
 ├── backend.tf                 # Remote state configuration (S3 + DynamoDB)
@@ -302,7 +302,7 @@ For better security, use partial configuration to avoid hardcoding values:
    ```
 
 4. **Add to `.gitignore`** to prevent committing sensitive values:
-   ```
+   ```text
    backend-config.hcl
    ```
 

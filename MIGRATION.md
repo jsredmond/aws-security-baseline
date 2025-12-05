@@ -9,7 +9,8 @@ The migration transforms the flat structure where all resources are defined in t
 ### What's Changing
 
 **Before (Monolithic):**
-```
+
+```text
 .
 ├── cloudtrail.tf       # All CloudTrail resources
 ├── config.tf           # All Config resources
@@ -23,7 +24,8 @@ The migration transforms the flat structure where all resources are defined in t
 ```
 
 **After (Modular):**
-```
+
+```text
 .
 ├── main.tf                    # Module calls
 ├── backend.tf                 # Remote state configuration
@@ -76,14 +78,14 @@ Before starting the migration:
    ```bash
    terraform state list
    ```
-   
+
    Save this output for reference during migration.
 
 3. **Run a plan to ensure no pending changes:**
    ```bash
    terraform plan
    ```
-   
+
    If there are pending changes, apply them first or note them for later.
 
 ### Phase 2: State Migration (30-45 minutes)
@@ -226,19 +228,19 @@ terraform state rm random_id.suffix 2>/dev/null || echo "No shared random_id to 
    ```bash
    terraform state list
    ```
-   
+
    All resources should now be under `module.<service>[0]` paths.
 
 2. **Run terraform plan:**
    ```bash
    terraform plan
    ```
-   
+
    **Expected result:** No resources should be marked for destruction. You may see:
    - Minor changes to tags (adding Module tag)
    - Updates to resource names or descriptions
    - Changes to computed attributes
-   
+
    **Unexpected results that require investigation:**
    - Any resources marked for destruction (red `-`)
    - Any resources marked for creation (green `+`)
@@ -248,7 +250,7 @@ terraform state rm random_id.suffix 2>/dev/null || echo "No shared random_id to 
    ```bash
    terraform output
    ```
-   
+
    All outputs should still be available and show correct values.
 
 4. **Run validation:**
@@ -270,7 +272,7 @@ If the plan looks correct:
    ```bash
    terraform apply
    ```
-   
+
    Review the plan one more time before confirming.
 
 2. **Verify resources in AWS Console:**

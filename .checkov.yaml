@@ -1,2 +1,3 @@
 skip-check:
   - CKV_AWS_300  # S3 lifecycle configurations already have abort_incomplete_multipart_upload configured
+  - CKV_AWS_144  # Cross-region replication not required for single-region audit log storage; versioning enabled for data protection

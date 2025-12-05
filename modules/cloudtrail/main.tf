@@ -274,7 +274,7 @@ resource "aws_s3_bucket_policy" "cloudtrail" {
 # CloudWatch Log Group
 resource "aws_cloudwatch_log_group" "cloudtrail" {
   name              = local.cloudwatch_log_name
-  retention_in_days = var.cloudwatch_logs_retention_days
+  retention_in_days = 365 # Minimum 1 year retention for compliance (CKV_AWS_338)
   kms_key_id        = aws_kms_key.cloudwatch.arn
 
   tags = local.common_tags

@@ -6,12 +6,11 @@ module "cloudtrail" {
   count  = var.enable_cloudtrail ? 1 : 0
   source = "./modules/cloudtrail"
 
-  environment                    = var.environment
-  cloudwatch_logs_retention_days = var.cloudtrail_cloudwatch_logs_retention_days
-  s3_lifecycle_expiration_days   = var.cloudtrail_s3_lifecycle_expiration_days
-  kms_key_deletion_window        = var.cloudtrail_kms_key_deletion_window
-  enable_s3_data_events          = var.cloudtrail_enable_s3_data_events
-  common_tags                    = var.common_tags
+  environment                  = var.environment
+  s3_lifecycle_expiration_days = var.cloudtrail_s3_lifecycle_expiration_days
+  kms_key_deletion_window      = var.cloudtrail_kms_key_deletion_window
+  enable_s3_data_events        = var.cloudtrail_enable_s3_data_events
+  common_tags                  = var.common_tags
 }
 
 # AWS Config Module

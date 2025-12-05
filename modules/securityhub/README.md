@@ -38,6 +38,7 @@ This module has been updated to implement AWS Security Hub best practices:
    - Enables comprehensive security monitoring
 
 These enhancements provide:
+
 - Reduced finding noise and improved signal-to-noise ratio
 - Automatic adoption of new security controls
 - Comprehensive security findings aggregation
@@ -58,12 +59,12 @@ module "securityhub" {
 ```hcl
 module "securityhub" {
   source = "./modules/securityhub"
-  
+
   # Enable only specific standards
   enable_cis_standard              = true
   enable_pci_dss_standard          = true
   enable_aws_foundational_standard = false
-  
+
   # Enable product integrations
   enable_guardduty_integration     = true
   enable_inspector_integration     = true
@@ -76,7 +77,7 @@ module "securityhub" {
 ```hcl
 module "securityhub" {
   source = "./modules/securityhub"
-  
+
   # Enable only AWS Foundational standard for dev
   enable_cis_standard              = false
   enable_pci_dss_standard          = false
@@ -86,44 +87,44 @@ module "securityhub" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
+| Name      | Version   |
+| --------- | --------- |
 | terraform | >= 1.14.0 |
-| aws | >= 6.24.0 |
+| aws       | >= 6.24.0 |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 6.24.0 |
+| Name | Version   |
+| ---- | --------- |
+| aws  | >= 6.24.0 |
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| aws_securityhub_account.main | resource |
-| aws_securityhub_standards_subscription.standards | resource |
-| aws_caller_identity.current | data source |
-| aws_region.current | data source |
+| Name                                             | Type        |
+| ------------------------------------------------ | ----------- |
+| aws_securityhub_account.main                     | resource    |
+| aws_securityhub_standards_subscription.standards | resource    |
+| aws_caller_identity.current                      | data source |
+| aws_region.current                               | data source |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| enable_cis_standard | Enable CIS AWS Foundations Benchmark standard | `bool` | `true` | no |
-| enable_pci_dss_standard | Enable PCI DSS standard | `bool` | `false` | no |
-| enable_aws_foundational_standard | Enable AWS Foundational Security Best Practices standard | `bool` | `true` | no |
-| enable_guardduty_integration | Enable GuardDuty product integration with Security Hub | `bool` | `true` | no |
-| enable_inspector_integration | Enable Inspector product integration with Security Hub | `bool` | `true` | no |
-| enable_macie_integration | Enable Macie product integration with Security Hub | `bool` | `false` | no |
+| Name                             | Description                                              | Type   | Default | Required |
+| -------------------------------- | -------------------------------------------------------- | ------ | ------- | :------: |
+| enable_cis_standard              | Enable CIS AWS Foundations Benchmark standard            | `bool` | `true`  |    no    |
+| enable_pci_dss_standard          | Enable PCI DSS standard                                  | `bool` | `false` |    no    |
+| enable_aws_foundational_standard | Enable AWS Foundational Security Best Practices standard | `bool` | `true`  |    no    |
+| enable_guardduty_integration     | Enable GuardDuty product integration with Security Hub   | `bool` | `true`  |    no    |
+| enable_inspector_integration     | Enable Inspector product integration with Security Hub   | `bool` | `true`  |    no    |
+| enable_macie_integration         | Enable Macie product integration with Security Hub       | `bool` | `false` |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| account_arn | ARN of the Security Hub account |
-| account_id | ID of the Security Hub account |
-| enabled_standards | Map of enabled Security Hub standards |
+| Name                    | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| account_arn             | ARN of the Security Hub account                 |
+| account_id              | ID of the Security Hub account                  |
+| enabled_standards       | Map of enabled Security Hub standards           |
 | standards_subscriptions | Map of Security Hub standards subscription ARNs |
 
 ## Prerequisites
@@ -173,6 +174,7 @@ The following IAM permissions are required to deploy this module:
 ### CIS AWS Foundations Benchmark v1.4.0
 
 The CIS AWS Foundations Benchmark provides prescriptive guidance for configuring security options for AWS. It includes recommendations for:
+
 - Identity and Access Management
 - Logging and Monitoring
 - Networking
@@ -183,6 +185,7 @@ The CIS AWS Foundations Benchmark provides prescriptive guidance for configuring
 ### PCI DSS v3.2.1
 
 The Payment Card Industry Data Security Standard (PCI DSS) is an information security standard for organizations that handle credit cards. This standard includes requirements for:
+
 - Network Security
 - Access Control
 - Data Protection
@@ -193,6 +196,7 @@ The Payment Card Industry Data Security Standard (PCI DSS) is an information sec
 ### AWS Foundational Security Best Practices v1.0.0
 
 AWS Foundational Security Best Practices standard is a set of controls that detect when deployed AWS accounts and resources deviate from security best practices. It covers:
+
 - AWS service configurations
 - Security best practices
 - Compliance requirements
@@ -202,6 +206,7 @@ AWS Foundational Security Best Practices standard is a set of controls that dete
 ## Integration with Other Services
 
 Security Hub aggregates findings from:
+
 - AWS GuardDuty (threat detection)
 - AWS Config (configuration compliance)
 - AWS Inspector (vulnerability assessment)
@@ -229,6 +234,7 @@ Security Hub aggregates findings from:
 ## Cost Considerations
 
 Security Hub pricing includes:
+
 - Per security check per month
 - Per finding ingestion event per month
 - Costs vary by region
@@ -240,6 +246,7 @@ Enable only the standards you need to optimize costs. For development environmen
 ### Security Hub Already Enabled
 
 If Security Hub is already enabled in the account/region:
+
 ```bash
 terraform import module.securityhub.aws_securityhub_account.main <account-id>
 ```
@@ -247,6 +254,7 @@ terraform import module.securityhub.aws_securityhub_account.main <account-id>
 ### Standards Subscription Errors
 
 If standards subscription fails:
+
 1. Verify Security Hub is enabled
 2. Check that the standard is available in your region
 3. Ensure you have the required IAM permissions
@@ -254,6 +262,7 @@ If standards subscription fails:
 ### Findings Not Appearing
 
 If findings are not appearing:
+
 1. Verify that source services (GuardDuty, Config) are enabled
 2. Check that Security Hub has the necessary permissions
 3. Allow time for initial findings to populate (can take several hours)

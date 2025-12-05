@@ -5,6 +5,7 @@ This module enables Amazon Inspector for continuous vulnerability scanning of AW
 ## Purpose
 
 Amazon Inspector automatically discovers and scans workloads for:
+
 - Software vulnerabilities (CVEs)
 - Network exposure issues
 - Unintended network reachability
@@ -54,53 +55,57 @@ module "inspector" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
+| Name      | Version   |
+| --------- | --------- |
 | terraform | >= 1.14.1 |
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| aws       | >= 6.25.0 |
+| random    | >= 3.7.2  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| Name   | Version   |
+| ------ | --------- |
+| aws    | >= 6.25.0 |
+| random | >= 3.7.2  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
-| resource_types | Types of resources to scan | `list(string)` | `["EC2", "ECR", "LAMBDA"]` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
+| Name           | Description                           | Type           | Default                    | Required |
+| -------------- | ------------------------------------- | -------------- | -------------------------- | :------: |
+| environment    | Environment name (dev, staging, prod) | `string`       | n/a                        |   yes    |
+| resource_types | Types of resources to scan            | `list(string)` | `["EC2", "ECR", "LAMBDA"]` |    no    |
+| common_tags    | Common tags to apply to all resources | `map(string)`  | `{}`                       |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| account_id | AWS account ID where Inspector is enabled |
+| Name                   | Description                                 |
+| ---------------------- | ------------------------------------------- |
+| account_id             | AWS account ID where Inspector is enabled   |
 | enabled_resource_types | List of resource types enabled for scanning |
-| region | AWS region where Inspector is enabled |
+| region                 | AWS region where Inspector is enabled       |
 
 ## Resource Types
 
 ### EC2
+
 - Scans EC2 instances for software vulnerabilities
 - Checks network reachability
 - Requires SSM Agent (automatically installed on Amazon Linux 2/2023)
 
 ### ECR
+
 - Scans container images for OS and programming language vulnerabilities
 - Scans on push and continuously for new CVEs
 - No additional configuration required
 
 ### LAMBDA
+
 - Scans Lambda function code packages and layers
 - Identifies vulnerabilities in application dependencies
 - Automatic scanning on deployment
 
 ### LAMBDA_CODE
+
 - Deep code scanning for Lambda functions
 - Identifies code-level vulnerabilities
 - Provides code snippets showing vulnerable code
@@ -108,6 +113,7 @@ module "inspector" {
 ## Findings
 
 Inspector generates findings for:
+
 - Software vulnerabilities (CVEs) with CVSS scores
 - Network paths that allow unintended access
 - Missing security patches
@@ -122,6 +128,7 @@ Inspector generates findings for:
 ## Cost Considerations
 
 Inspector pricing is based on:
+
 - **EC2**: Per instance per month
 - **ECR**: Per image scan
 - **Lambda**: Per function per month

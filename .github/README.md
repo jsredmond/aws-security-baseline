@@ -3,7 +3,9 @@
 ## Security Scanning
 
 ### CodeQL
+
 CodeQL is **disabled** for this repository because:
+
 - This is primarily a **Terraform (HCL)** project
 - CodeQL does not support Terraform/HCL analysis
 - The minimal Python code (audit scripts) is better covered by other tools
@@ -38,6 +40,7 @@ Instead of CodeQL, this project uses:
 ## Dependabot
 
 Configured in `dependabot.yml` for:
+
 - GitHub Actions updates
 - Python dependencies (audit scripts)
 

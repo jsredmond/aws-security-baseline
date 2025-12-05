@@ -5,6 +5,7 @@ This module enables Amazon Macie for automated sensitive data discovery and prot
 ## Purpose
 
 Amazon Macie uses machine learning to:
+
 - Discover sensitive data in S3 buckets (PII, financial data, credentials)
 - Monitor S3 buckets for security and access control issues
 - Provide visibility into data security posture
@@ -53,39 +54,40 @@ module "macie" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
+| Name      | Version   |
+| --------- | --------- |
 | terraform | >= 1.14.1 |
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| aws       | >= 6.25.0 |
+| random    | >= 3.7.2  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| Name   | Version   |
+| ------ | --------- |
+| aws    | >= 6.25.0 |
+| random | >= 3.7.2  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
-| finding_publishing_frequency | Frequency of publishing findings | `string` | `"SIX_HOURS"` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
+| Name                         | Description                           | Type          | Default       | Required |
+| ---------------------------- | ------------------------------------- | ------------- | ------------- | :------: |
+| environment                  | Environment name (dev, staging, prod) | `string`      | n/a           |   yes    |
+| finding_publishing_frequency | Frequency of publishing findings      | `string`      | `"SIX_HOURS"` |    no    |
+| common_tags                  | Common tags to apply to all resources | `map(string)` | `{}`          |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
+| Name             | Description                                 |
+| ---------------- | ------------------------------------------- |
 | macie_account_id | The unique identifier for the Macie account |
-| service_role_arn | ARN of the service-linked role for Macie |
-| created_at | Timestamp when Macie was enabled |
-| account_id | AWS account ID where Macie is enabled |
+| service_role_arn | ARN of the service-linked role for Macie    |
+| created_at       | Timestamp when Macie was enabled            |
+| account_id       | AWS account ID where Macie is enabled       |
 
 ## What Macie Detects
 
 ### Managed Data Identifiers (Built-in)
+
 - **Personal Information**: Names, addresses, phone numbers, email addresses
 - **Financial Data**: Credit card numbers, bank account numbers
 - **Credentials**: AWS secret keys, private keys, API keys
@@ -93,6 +95,7 @@ module "macie" {
 - **Geographic Data**: IP addresses, GPS coordinates
 
 ### Security Issues
+
 - Unencrypted buckets
 - Publicly accessible buckets
 - Buckets shared with external accounts
@@ -102,6 +105,7 @@ module "macie" {
 ## Classification Jobs
 
 After enabling Macie, you can create classification jobs to:
+
 - Scan specific S3 buckets
 - Run one-time or scheduled scans
 - Define sampling depth (percentage of objects to scan)
@@ -131,11 +135,13 @@ Macie generates two types of findings:
 ## Cost Considerations
 
 Macie pricing includes:
+
 - **Bucket evaluation**: Per bucket per month
 - **Object monitoring**: Per GB of data processed
 - **Sensitive data discovery**: Per GB scanned
 
 First 30 days include:
+
 - 1,000 buckets evaluated free
 - 150 GB of data processed free
 

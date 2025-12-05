@@ -3,6 +3,7 @@
 ## Purpose
 
 This module deploys and configures AWS CloudTrail with comprehensive security features including:
+
 - Multi-region trail for complete API activity logging
 - KMS encryption for logs at rest
 - CloudWatch Logs integration for real-time monitoring
@@ -23,7 +24,7 @@ module "cloudtrail" {
   source = "./modules/cloudtrail"
 
   environment = "prod"
-  
+
   common_tags = {
     Project = "security-baseline"
     Owner   = "security-team"
@@ -42,7 +43,7 @@ module "cloudtrail" {
   s3_lifecycle_expiration_days   = 730
   kms_key_deletion_window        = 10
   enable_s3_data_events          = true
-  
+
   common_tags = {
     Project     = "security-baseline"
     Owner       = "security-team"
@@ -54,28 +55,28 @@ module "cloudtrail" {
 
 ## Input Variables
 
-| Name | Description | Type | Default | Required | Validation |
-|------|-------------|------|---------|----------|------------|
-| environment | Environment name (dev, staging, prod) | string | - | yes | Must be dev, staging, or prod |
-| cloudwatch_logs_retention_days | Number of days to retain CloudWatch logs | number | 365 | no | Must be valid CloudWatch retention value |
-| s3_lifecycle_expiration_days | Number of days before S3 objects expire | number | 365 | no | Must be greater than 0 |
-| kms_key_deletion_window | Number of days before KMS key deletion | number | 7 | no | Must be between 7 and 30 |
-| enable_s3_data_events | Enable S3 data events in CloudTrail | bool | true | no | - |
-| common_tags | Common tags to apply to all resources | map(string) | {} | no | - |
+| Name                           | Description                              | Type        | Default | Required | Validation                               |
+| ------------------------------ | ---------------------------------------- | ----------- | ------- | -------- | ---------------------------------------- |
+| environment                    | Environment name (dev, staging, prod)    | string      | -       | yes      | Must be dev, staging, or prod            |
+| cloudwatch_logs_retention_days | Number of days to retain CloudWatch logs | number      | 365     | no       | Must be valid CloudWatch retention value |
+| s3_lifecycle_expiration_days   | Number of days before S3 objects expire  | number      | 365     | no       | Must be greater than 0                   |
+| kms_key_deletion_window        | Number of days before KMS key deletion   | number      | 7       | no       | Must be between 7 and 30                 |
+| enable_s3_data_events          | Enable S3 data events in CloudTrail      | bool        | true    | no       | -                                        |
+| common_tags                    | Common tags to apply to all resources    | map(string) | {}      | no       | -                                        |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| trail_arn | ARN of the CloudTrail trail |
-| trail_id | ID of the CloudTrail trail |
-| s3_bucket_name | Name of the S3 bucket for CloudTrail logs |
-| s3_bucket_arn | ARN of the S3 bucket for CloudTrail logs |
-| kms_key_id | ID of the KMS key for CloudTrail encryption |
-| kms_key_arn | ARN of the KMS key for CloudTrail encryption |
-| cloudwatch_log_group_name | Name of the CloudWatch log group |
-| cloudwatch_log_group_arn | ARN of the CloudWatch log group |
-| sns_topic_arn | ARN of the SNS topic for CloudTrail alerts |
+| Name                      | Description                                  |
+| ------------------------- | -------------------------------------------- |
+| trail_arn                 | ARN of the CloudTrail trail                  |
+| trail_id                  | ID of the CloudTrail trail                   |
+| s3_bucket_name            | Name of the S3 bucket for CloudTrail logs    |
+| s3_bucket_arn             | ARN of the S3 bucket for CloudTrail logs     |
+| kms_key_id                | ID of the KMS key for CloudTrail encryption  |
+| kms_key_arn               | ARN of the KMS key for CloudTrail encryption |
+| cloudwatch_log_group_name | Name of the CloudWatch log group             |
+| cloudwatch_log_group_arn  | ARN of the CloudWatch log group              |
+| sns_topic_arn             | ARN of the SNS topic for CloudTrail alerts   |
 
 ## Prerequisites
 
@@ -84,12 +85,14 @@ module "cloudtrail" {
 The following AWS permissions are required to deploy this module:
 
 **CloudTrail:**
+
 - `cloudtrail:CreateTrail`
 - `cloudtrail:UpdateTrail`
 - `cloudtrail:StartLogging`
 - `cloudtrail:PutEventSelectors`
 
 **S3:**
+
 - `s3:CreateBucket`
 - `s3:PutBucketPolicy`
 - `s3:PutBucketVersioning`
@@ -100,29 +103,34 @@ The following AWS permissions are required to deploy this module:
 - `s3:PutBucketLogging`
 
 **KMS:**
+
 - `kms:CreateKey`
 - `kms:CreateAlias`
 - `kms:PutKeyPolicy`
 - `kms:EnableKeyRotation`
 
 **CloudWatch Logs:**
+
 - `logs:CreateLogGroup`
 - `logs:CreateLogStream`
 - `logs:PutRetentionPolicy`
 
 **IAM:**
+
 - `iam:CreateRole`
 - `iam:CreatePolicy`
 - `iam:AttachRolePolicy`
 - `iam:PassRole`
 
 **SNS:**
+
 - `sns:CreateTopic`
 - `sns:SetTopicAttributes`
 
 ### Service Quotas
 
 Ensure the following AWS service quotas are sufficient:
+
 - CloudTrail trails per region: Default is 5
 - S3 buckets per account: Default is 100
 - KMS keys per region: Default is 1000
@@ -179,6 +187,7 @@ This module has been updated to implement AWS security best practices:
 4. **CloudTrail Insights**: Enabled both `ApiCallRateInsight` and `ApiErrorRateInsight` for anomaly detection
 
 These changes improve security posture by:
+
 - Preventing confused deputy attacks on S3 and SNS resources
 - Ensuring comprehensive logging of global AWS services
 - Detecting unusual API activity patterns automatically

@@ -5,6 +5,7 @@ This module deploys AWS IAM Access Analyzer to identify resources shared with ex
 ## Purpose
 
 IAM Access Analyzer helps identify unintended access to your resources by:
+
 - Analyzing resource-based policies to find external access
 - Identifying unused IAM permissions
 - Validating policies against AWS best practices
@@ -54,42 +55,43 @@ module "accessanalyzer" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
+| Name      | Version   |
+| --------- | --------- |
 | terraform | >= 1.14.1 |
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| aws       | >= 6.25.0 |
+| random    | >= 3.7.2  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 6.25.0 |
-| random | >= 3.7.2 |
+| Name   | Version   |
+| ------ | --------- |
+| aws    | >= 6.25.0 |
+| random | >= 3.7.2  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
-| is_organization_analyzer | Whether to create an organization-level analyzer | `bool` | `false` | no |
-| enable_unused_access_analyzer | Enable unused access analyzer | `bool` | `true` | no |
-| unused_access_age_days | Number of days to consider access as unused | `number` | `90` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
+| Name                          | Description                                      | Type          | Default | Required |
+| ----------------------------- | ------------------------------------------------ | ------------- | ------- | :------: |
+| environment                   | Environment name (dev, staging, prod)            | `string`      | n/a     |   yes    |
+| is_organization_analyzer      | Whether to create an organization-level analyzer | `bool`        | `false` |    no    |
+| enable_unused_access_analyzer | Enable unused access analyzer                    | `bool`        | `true`  |    no    |
+| unused_access_age_days        | Number of days to consider access as unused      | `number`      | `90`    |    no    |
+| common_tags                   | Common tags to apply to all resources            | `map(string)` | `{}`    |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| external_analyzer_arn | ARN of the external access analyzer |
-| external_analyzer_id | ID of the external access analyzer |
-| unused_analyzer_arn | ARN of the unused access analyzer (if enabled) |
-| unused_analyzer_id | ID of the unused access analyzer (if enabled) |
-| account_id | AWS account ID where Access Analyzer is enabled |
+| Name                  | Description                                     |
+| --------------------- | ----------------------------------------------- |
+| external_analyzer_arn | ARN of the external access analyzer             |
+| external_analyzer_id  | ID of the external access analyzer              |
+| unused_analyzer_arn   | ARN of the unused access analyzer (if enabled)  |
+| unused_analyzer_id    | ID of the unused access analyzer (if enabled)   |
+| account_id            | AWS account ID where Access Analyzer is enabled |
 
 ## What Gets Analyzed
 
 IAM Access Analyzer monitors these resource types:
+
 - Amazon S3 buckets
 - IAM roles
 - KMS keys
@@ -102,6 +104,7 @@ IAM Access Analyzer monitors these resource types:
 ## Findings
 
 Access Analyzer generates findings when:
+
 - A resource is accessible by an external principal
 - IAM permissions haven't been used within the specified timeframe
 - Policies grant broader access than necessary

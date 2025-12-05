@@ -74,39 +74,39 @@ module "guardduty" {
 
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 1.0 |
-| aws | >= 5.0 |
-| random | >= 3.0 |
+| Name      | Version |
+| --------- | ------- |
+| terraform | >= 1.0  |
+| aws       | >= 5.0  |
+| random    | >= 3.0  |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| aws | >= 5.0 |
-| random | >= 3.0 |
+| Name   | Version |
+| ------ | ------- |
+| aws    | >= 5.0  |
+| random | >= 3.0  |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| environment | Environment name (dev, staging, prod) | `string` | n/a | yes |
-| finding_publishing_frequency | Frequency of notifications about updated findings (FIFTEEN_MINUTES, ONE_HOUR, SIX_HOURS) | `string` | `"SIX_HOURS"` | no |
-| enable_s3_logs | Enable S3 protection data source | `bool` | `true` | no |
-| enable_kubernetes_logs | Enable Kubernetes audit logs data source | `bool` | `true` | no |
-| enable_malware_protection | Enable malware protection for EC2 instances | `bool` | `true` | no |
-| auto_enable_organization_members | Auto-enable GuardDuty for organization members (ALL, NEW, NONE) | `string` | `"NEW"` | no |
-| is_organization_admin_account | Whether this account is the GuardDuty delegated administrator for the organization | `bool` | `false` | no |
-| common_tags | Common tags to apply to all resources | `map(string)` | `{}` | no |
+| Name                             | Description                                                                              | Type          | Default       | Required |
+| -------------------------------- | ---------------------------------------------------------------------------------------- | ------------- | ------------- | :------: |
+| environment                      | Environment name (dev, staging, prod)                                                    | `string`      | n/a           |   yes    |
+| finding_publishing_frequency     | Frequency of notifications about updated findings (FIFTEEN_MINUTES, ONE_HOUR, SIX_HOURS) | `string`      | `"SIX_HOURS"` |    no    |
+| enable_s3_logs                   | Enable S3 protection data source                                                         | `bool`        | `true`        |    no    |
+| enable_kubernetes_logs           | Enable Kubernetes audit logs data source                                                 | `bool`        | `true`        |    no    |
+| enable_malware_protection        | Enable malware protection for EC2 instances                                              | `bool`        | `true`        |    no    |
+| auto_enable_organization_members | Auto-enable GuardDuty for organization members (ALL, NEW, NONE)                          | `string`      | `"NEW"`       |    no    |
+| is_organization_admin_account    | Whether this account is the GuardDuty delegated administrator for the organization       | `bool`        | `false`       |    no    |
+| common_tags                      | Common tags to apply to all resources                                                    | `map(string)` | `{}`          |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| detector_id | The ID of the GuardDuty detector |
-| detector_arn | The ARN of the GuardDuty detector |
-| account_id | The AWS account ID where GuardDuty is enabled |
+| Name         | Description                                   |
+| ------------ | --------------------------------------------- |
+| detector_id  | The ID of the GuardDuty detector              |
+| detector_arn | The ARN of the GuardDuty detector             |
+| account_id   | The AWS account ID where GuardDuty is enabled |
 
 ## Prerequisites
 
@@ -171,6 +171,7 @@ This module has been updated to enable additional GuardDuty protection plans:
    - Enables detection of multi-stage attacks across EKS layers
 
 These enhancements provide:
+
 - Deeper visibility into workload security across compute types
 - Detection of runtime threats that foundational data sources miss
 - Comprehensive coverage for modern cloud-native architectures

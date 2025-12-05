@@ -15,5 +15,5 @@ output "enabled_standards" {
 
 output "standards_subscriptions" {
   description = "Map of Security Hub standards subscription ARNs"
-  value       = { for k, v in aws_securityhub_standards_subscription.standards : k => v.standards_subscription_arn }
+  value       = { for k, v in aws_securityhub_standards_subscription.standards : k => v.standards_arn }
 }

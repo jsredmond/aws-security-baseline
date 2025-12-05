@@ -1,6 +1,6 @@
 module github.com/aws-security-baseline/test
 
-go 1.22.0
+go 1.23.0
 
 require (
 	github.com/hashicorp/hcl/v2 v2.24.0

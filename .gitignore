@@ -7,9 +7,10 @@
 
 # Crash log files
 crash.log
+crash.*.log
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run. Most
-# .tfvars files are managed as part of configuration and so should be included in
+# Ignore any .tfvars files that are generated automatically for each Terraform run.
+# Most .tfvars files are managed as part of configuration and so should be included in
 # version control.
 #
 # example.tfvars
@@ -27,17 +28,48 @@ override.tf.json
 
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 *tfplan*
+tfplan
+
+# Terraform lock file (regenerated on init)
 .terraform.lock.hcl
 
 # Backend configuration files (may contain sensitive information)
 backend-config.hcl
 
-# Kiro steering and spec files
+# Checkov cache
+.dccache
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kiro steering and spec files (project-specific guidance)
 .kiro/steering/
 .kiro/specs/
 
 # Kiro MCP configuration (user-specific)
 .kiro/settings/mcp.json
-
-# Audit directory (temporary audit scripts and outputs)
-audit/

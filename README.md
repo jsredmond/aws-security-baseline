@@ -35,7 +35,6 @@ This project follows a modular architecture where each AWS security service is e
 ├── variables.tf               # Root-level input variables
 ├── outputs.tf                 # Aggregated outputs from modules
 ├── versions.tf                # Terraform and provider version constraints
-├── audit/                     # Python-based security audit tooling
 └── modules/                   # Reusable service modules
     ├── accessanalyzer/       # IAM Access Analyzer module
     ├── cloudtrail/           # CloudTrail logging module
@@ -574,7 +573,6 @@ This project uses a comprehensive security analysis pipeline via GitHub Actions:
 | Super-Linter | Multi-language linting (Terraform, YAML) | `super-linter.yml` |
 | Checkov      | Infrastructure security scanning         | Via Super-Linter   |
 | TFLint       | Terraform-specific linting               | Via Super-Linter   |
-| CodeQL       | Python code security analysis            | `codeql.yml`       |
 | Dependabot   | Dependency vulnerability scanning        | `dependabot.yml`   |
 | Biome        | JSON formatting validation               | Via Super-Linter   |
 | yamllint     | YAML syntax and style checking           | Via Super-Linter   |
@@ -611,18 +609,6 @@ Some checks are intentionally skipped with documented reasons in `.checkov.yaml`
 
 - ✅ `CKV_AWS_300` – S3 lifecycle policies configured with abort_incomplete_multipart_upload
 - ✅ `CKV_AWS_144` – Cross-region replication not required for single-region audit log storage
-
-### Python Audit Tooling
-
-The `audit/` directory contains Python-based tooling for auditing modules against AWS best practices:
-
-```bash
-cd audit
-pip install -r requirements.txt
-python audit.py --module cloudtrail
-```
-
-See [audit/README.md](./audit/README.md) for detailed documentation.
 
 ---
 
@@ -855,9 +841,8 @@ This project is licensed under the MIT License – see the [LICENSE](LICENSE) fi
 
 - ✅ Modular architecture implemented (8 security modules)
 - ✅ All modules documented with README files
-- ✅ Security scanning integrated (Checkov, TFLint, CodeQL)
-- ✅ CI/CD workflows configured (Super-Linter, CodeQL, Dependabot)
-- ✅ Python audit tooling included
+- ✅ Security scanning integrated (Checkov, TFLint)
+- ✅ CI/CD workflows configured (Super-Linter, Dependabot)
 - ✅ GitHub Actions pinned to SHA for supply chain security
 
 **Current Version:** 2.0.0 (Modular Architecture)

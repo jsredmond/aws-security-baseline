@@ -73,3 +73,6 @@ Thumbs.db
 
 # Kiro MCP configuration (user-specific)
 .kiro/settings/mcp.json
+
+# Audit tooling (local utility scripts, not production code)
+audit/

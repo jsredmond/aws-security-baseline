@@ -10,13 +10,16 @@ A modular Terraform implementation to bootstrap security best practices in AWS e
 
 ## ✨ Features
 
-| 🔐 Feature   | ✅ Description                      | 📚 Module                                    |
-| ------------ | ----------------------------------- | -------------------------------------------- |
-| CloudTrail   | Centralized API logging             | [modules/cloudtrail](./modules/cloudtrail)   |
-| Config       | Configuration change tracking       | [modules/config](./modules/config)           |
-| GuardDuty    | Detects threats and provides alerts | [modules/guardduty](./modules/guardduty)     |
-| Detective    | Visual investigation of findings    | [modules/detective](./modules/detective)     |
-| Security Hub | Central dashboard for findings      | [modules/securityhub](./modules/securityhub) |
+| 🔐 Feature      | ✅ Description                          | 📚 Module                                          |
+| --------------- | --------------------------------------- | -------------------------------------------------- |
+| CloudTrail      | Centralized API logging with encryption | [modules/cloudtrail](./modules/cloudtrail)         |
+| Config          | Configuration change tracking           | [modules/config](./modules/config)                 |
+| GuardDuty       | Threat detection and alerts             | [modules/guardduty](./modules/guardduty)           |
+| Detective       | Visual investigation of findings        | [modules/detective](./modules/detective)           |
+| Security Hub    | Central dashboard for findings          | [modules/securityhub](./modules/securityhub)       |
+| Access Analyzer | IAM policy and resource access analysis | [modules/accessanalyzer](./modules/accessanalyzer) |
+| Inspector       | Automated vulnerability scanning        | [modules/inspector](./modules/inspector)           |
+| Macie           | Sensitive data discovery and protection | [modules/macie](./modules/macie)                   |
 
 ---
 
@@ -33,10 +36,13 @@ This project follows a modular architecture where each AWS security service is e
 ├── outputs.tf                 # Aggregated outputs from modules
 ├── versions.tf                # Terraform and provider version constraints
 └── modules/                   # Reusable service modules
+    ├── accessanalyzer/       # IAM Access Analyzer module
     ├── cloudtrail/           # CloudTrail logging module
     ├── config/               # AWS Config module
     ├── detective/            # Amazon Detective module
     ├── guardduty/            # GuardDuty threat detection module
+    ├── inspector/            # Amazon Inspector module
+    ├── macie/                # Amazon Macie module
     └── securityhub/          # Security Hub aggregation module
 ```
 
@@ -179,6 +185,36 @@ Centralized security findings dashboard.
 - CIS AWS Foundations Benchmark
 - AWS Foundational Security Best Practices
 - Optional PCI DSS standard
+
+#### [Access Analyzer Module](./modules/accessanalyzer)
+
+IAM policy and resource access analysis.
+
+**Key Features:**
+
+- External access analyzer for public/cross-account access
+- Unused access analyzer for least privilege
+- Configurable analysis scope
+
+#### [Inspector Module](./modules/inspector)
+
+Automated vulnerability scanning.
+
+**Key Features:**
+
+- EC2 instance vulnerability scanning
+- ECR container image scanning
+- Lambda function code scanning
+
+#### [Macie Module](./modules/macie)
+
+Sensitive data discovery and protection.
+
+**Key Features:**
+
+- Automated sensitive data discovery
+- S3 bucket security analysis
+- Configurable finding frequency
 
 ### Input Variables
 
@@ -528,18 +564,33 @@ terraform init -migrate-state
 
 ## 🧪 Testing & Security
 
-### Security Scanning
+### CI/CD Security Pipeline
 
-This project includes multiple security scanning tools:
+This project uses a comprehensive security analysis pipeline via GitHub Actions:
 
-- **Checkov:** Infrastructure security scanning
-- **TFLint:** Terraform linting
-- **Terrascan:** Policy-as-code security scanning
+| Tool         | Purpose                                  | Workflow           |
+| ------------ | ---------------------------------------- | ------------------ |
+| Super-Linter | Multi-language linting (Terraform, YAML) | `super-linter.yml` |
+| Checkov      | Infrastructure security scanning         | Via Super-Linter   |
+| TFLint       | Terraform-specific linting               | Via Super-Linter   |
+| Dependabot   | Dependency vulnerability scanning        | `dependabot.yml`   |
+| Biome        | JSON formatting validation               | Via Super-Linter   |
+| yamllint     | YAML syntax and style checking           | Via Super-Linter   |
+| markdownlint | Markdown formatting validation           | Via Super-Linter   |
+
+### Security Best Practices Enforced
+
+- **Action Pinning:** All GitHub Actions are pinned to SHA commits for supply chain security
+- **Minimal Permissions:** Workflows use least-privilege permission model
+- **Credential Protection:** `persist-credentials: false` on checkout actions
+- **Dependency Updates:** Automated via Dependabot with cooldown periods
+
+### Local Security Scanning
 
 Run security scans before deploying:
 
 ```bash
-# Run Checkov security scan
+# Run Checkov security scan (REQUIRED before commits)
 checkov -d . --framework terraform
 
 # Run TFLint
@@ -557,26 +608,7 @@ terraform validate
 Some checks are intentionally skipped with documented reasons in `.checkov.yaml`:
 
 - ✅ `CKV_AWS_300` – S3 lifecycle policies configured with abort_incomplete_multipart_upload
-- ✅ `CKV2_AWS_62` – S3 event notification via EventBridge enabled for monitoring
-
-### Property-Based Testing
-
-The project includes comprehensive property-based tests using Terratest (Go):
-
-```bash
-cd test
-go test -v -timeout 30m
-```
-
-Tests verify:
-
-- Module structure completeness
-- Resource encapsulation
-- Variable propagation
-- Output aggregation
-- S3 security configurations
-- Backend configuration
-- Module independence
+- ✅ `CKV_AWS_144` – Cross-region replication not required for single-region audit log storage
 
 ---
 
@@ -731,12 +763,12 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines (if available).
 Future enhancements:
 
 - [ ] VPC Flow Logs integration
-- [ ] AWS Macie module
-- [ ] AWS Inspector module
 - [ ] Automated compliance reporting
 - [ ] Multi-region deployment support
 - [ ] Terraform Cloud/Enterprise integration
 - [ ] Additional compliance standards (HIPAA, SOC 2)
+- [ ] AWS Organizations integration
+- [ ] Cross-account security aggregation
 
 ---
 
@@ -807,15 +839,16 @@ This project is licensed under the MIT License – see the [LICENSE](LICENSE) fi
 
 ## 📊 Project Status
 
-- ✅ Modular architecture implemented
-- ✅ All modules documented
-- ✅ Property-based tests included
-- ✅ Security scanning integrated
-- ✅ CI/CD workflows configured
-- ✅ Migration guide provided
+- ✅ Modular architecture implemented (8 security modules)
+- ✅ All modules documented with README files
+- ✅ Security scanning integrated (Checkov, TFLint)
+- ✅ CI/CD workflows configured (Super-Linter, Dependabot)
+- ✅ GitHub Actions pinned to SHA for supply chain security
 
 **Current Version:** 2.0.0 (Modular Architecture)
 
 **Terraform Version:** >= 1.14.0
 
 **AWS Provider Version:** >= 6.24.0
+
+**Security Modules:** CloudTrail, Config, GuardDuty, Detective, Security Hub, Access Analyzer, Inspector, Macie

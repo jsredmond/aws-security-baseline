@@ -1,4 +1,0 @@
-# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/display.py
-# hypothesis_version: 6.148.8
-
-['    • AWS CLI: ', 'AWS Credentials', 'AWS Region', 'Deployment Settings', 'Deployment Settings:', 'Description', 'Disabled', 'Enabled', 'Environment', 'GitHub: ', 'Key', 'Module', 'Next Steps', 'Resource Tags', 'Resource Tags:', 'Security Modules', 'Security Modules:', 'Setting', 'Status', 'Value', 'aws configure', 'aws configure\n', 'bold blue', 'bold blue underline', 'bold cyan', 'bold green', 'bold white', 'bold yellow', 'center', 'cyan', 'dim', 'green', 'italic white', 'terraform apply', 'terraform init', 'terraform plan', 'white', '⚠ AWS Credentials\n', '📋 Next Steps\n']

@@ -1,4 +1,0 @@
-# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/display.py
-# hypothesis_version: 6.148.8
-
-['GitHub: ', 'bold blue underline', 'bold cyan', 'dim', 'green', 'italic white']

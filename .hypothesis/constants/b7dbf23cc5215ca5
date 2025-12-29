@@ -1,4 +1,0 @@
-# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/prompts.py
-# hypothesis_version: 6.148.8
-
-['#', '1', 'A', 'Description', 'Environment', 'Key', 'ManagedBy', 'Module', 'N', 'S', 'Terraform', 'Value', 'a', 'ap-northeast-1', 'ap-southeast-1', 'ap-southeast-2', 'bold magenta', 'cyan', 'dev', 'dim', 'eu-central-1', 'eu-west-1', 'eu-west-2', 'n', 'prod', 's', 'staging', 'us-east-1', 'us-east-2', 'us-west-1', 'us-west-2', 'white']

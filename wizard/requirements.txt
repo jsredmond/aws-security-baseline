@@ -1,0 +1,10 @@
+# AWS Security Baseline Deployment Wizard Dependencies
+
+# Terminal UI and formatting
+rich>=13.0.0
+
+# Property-based testing
+hypothesis>=6.0.0
+
+# Test framework
+pytest>=7.0.0

@@ -1,0 +1,4 @@
+# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/generator.py
+# hypothesis_version: 6.148.8
+
+['"', '#', '# Common Tags', '=', '\\"', 'aws_region', 'common_tags = {', 'enable_', 'environment', 'false', 'terraform.tfvars', 'true', '}']

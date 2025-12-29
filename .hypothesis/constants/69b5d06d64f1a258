@@ -1,0 +1,4 @@
+# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/display.py
+# hypothesis_version: 6.148.8
+
+['AWS Region', 'Deployment Settings', 'Deployment Settings:', 'Description', 'Disabled', 'Enabled', 'Environment', 'GitHub: ', 'Key', 'Module', 'Resource Tags', 'Resource Tags:', 'Security Modules', 'Security Modules:', 'Setting', 'Status', 'Value', 'bold blue underline', 'bold cyan', 'bold yellow', 'center', 'dim', 'green', 'italic white', 'white']

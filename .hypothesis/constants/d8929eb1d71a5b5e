@@ -1,0 +1,4 @@
+# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/cli.py
+# hypothesis_version: 6.148.8
+
+['--all-modules', '--env', '--region', '--tag', '=', 'ENV', 'Environment', 'KEY=VALUE', 'ManagedBy', 'REGION', 'Terraform', 'append', 'store_true', 'tags', 'wizard']

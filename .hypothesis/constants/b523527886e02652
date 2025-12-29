@@ -1,0 +1,4 @@
+# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/models.py
+# hypothesis_version: 6.148.8
+
+['AWS Config', 'CloudTrail', 'Detective', 'GuardDuty', 'IAM Access Analyzer', 'Inspector', 'Macie', 'Security Hub', 'accessanalyzer', 'cloudtrail', 'config', 'detective', 'dev', 'enable_cloudtrail', 'enable_config', 'enable_detective', 'enable_guardduty', 'enable_inspector', 'enable_macie', 'enable_securityhub', 'guardduty', 'inspector', 'macie', 'securityhub', 'us-east-1']

@@ -1,0 +1,10 @@
+# Python dependencies for AWS Security Baseline Audit
+
+# No external dependencies required for basic functionality
+# The audit infrastructure uses only Python standard library
+
+# Optional: For more robust HCL parsing (if needed in future)
+# python-hcl2==4.3.2
+
+# Optional: For enhanced JSON handling
+# pydantic==2.5.0

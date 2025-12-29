@@ -40,6 +40,8 @@ jobs:
           VALIDATE_JSCPD: false
           # Disable JSON_PRETTIER - Biome handles JSON formatting with tabs
           VALIDATE_JSON_PRETTIER: false
+          # Disable MARKDOWN_PRETTIER - markdownlint handles markdown
+          VALIDATE_MARKDOWN_PRETTIER: false
           # Disable Python linters - audit scripts are utility tools, not production code
           VALIDATE_PYTHON: false
           VALIDATE_PYTHON_BLACK: false
@@ -48,5 +50,7 @@ jobs:
           VALIDATE_PYTHON_MYPY: false
           VALIDATE_PYTHON_PYLINT: false
           VALIDATE_PYTHON_RUFF: false
+          # Disable Python Ruff formatter - handled locally
+          VALIDATE_PYTHON_RUFF_FORMAT: false
           # Disable natural language linter - too strict for documentation
           VALIDATE_NATURAL_LANGUAGE: false

@@ -1,7 +1,11 @@
+# =============================================================================
+# Terraform
+# =============================================================================
+
 # Local .terraform directories
 **/.terraform/*
 
-# .tfstate files
+# .tfstate files (use remote state in production)
 *.tfstate
 *.tfstate.*
 
@@ -9,24 +13,13 @@
 crash.log
 crash.*.log
 
-# Ignore any .tfvars files that are generated automatically for each Terraform run.
-# Most .tfvars files are managed as part of configuration and so should be included in
-# version control.
-#
-# example.tfvars
-
-# Ignore override files as they are usually used to override resources locally and so
-# are not checked in
+# Ignore override files (used for local overrides)
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 
-# Include override files you do wish to add to version control using negated pattern
-#
-# !example_override.tf
-
-# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+# Terraform plan files
 *tfplan*
 tfplan
 
@@ -36,10 +29,14 @@ tfplan
 # Backend configuration files (may contain sensitive information)
 backend-config.hcl
 
-# Checkov cache
-.dccache
+# Terraform variables (may contain sensitive values)
+terraform.tfvars
+*.auto.tfvars
 
+# =============================================================================
 # Python
+# =============================================================================
+
 __pycache__/
 *.py[cod]
 *$py.class
@@ -54,25 +51,42 @@ htmlcov/
 .tox/
 .nox/
 venv/
+.venv/
 ENV/
 
-# IDE
+# Hypothesis (property-based testing cache)
+.hypothesis/
+
+# Ruff cache
+.ruff_cache/
+
+# =============================================================================
+# Security & Linting Tools
+# =============================================================================
+
+# Checkov cache
+.dccache
+
+# =============================================================================
+# IDE & Editors
+# =============================================================================
+
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 
-# OS
+# =============================================================================
+# OS Files
+# =============================================================================
+
 .DS_Store
 Thumbs.db
 
-# Kiro steering and spec files (project-specific guidance)
-.kiro/steering/
-.kiro/specs/
+# =============================================================================
+# Kiro (AI Assistant)
+# =============================================================================
 
-# Kiro MCP configuration (user-specific)
-.kiro/settings/mcp.json
-
-# Audit tooling (local utility scripts, not production code)
-audit/
+# Kiro configuration (user-specific)
+.kiro/

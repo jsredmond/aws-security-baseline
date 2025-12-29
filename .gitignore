@@ -54,6 +54,7 @@ htmlcov/
 .tox/
 .nox/
 venv/
+.venv/
 ENV/
 
 # IDE

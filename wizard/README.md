@@ -19,13 +19,27 @@ configuration files.
 ### Prerequisites
 
 - Python 3.9 or higher
-- pip (Python package manager)
 
 ### Install Dependencies
 
+Create a virtual environment and install the required packages:
+
 ```bash
-cd wizard
-pip install -r requirements.txt
+# Create virtual environment
+python3 -m venv wizard/.venv
+
+# Activate it
+source wizard/.venv/bin/activate
+
+# Install dependencies
+pip install -r wizard/requirements.txt
+```
+
+After installation, run the wizard with:
+
+```bash
+source wizard/.venv/bin/activate  # if not already activated
+python wizard.py
 ```
 
 The wizard requires the following Python packages:

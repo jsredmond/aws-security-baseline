@@ -5,7 +5,6 @@ Property-based tests for wizard data models.
 **Validates: Requirements 2.5**
 """
 
-import pytest
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
@@ -13,13 +12,12 @@ from wizard.models import (
     AVAILABLE_MODULES,
     EXPECTED_MODULE_NAMES,
     ModuleInfo,
-    WizardConfig,
 )
 
 
 class TestModuleRegistryCompleteness:
     """Property tests for module registry completeness.
-    
+
     **Feature: deployment-wizard, Property: Module registry contains exactly 8 expected modules**
     **Validates: Requirements 2.5**
     """
@@ -36,7 +34,7 @@ class TestModuleRegistryCompleteness:
     def test_all_modules_have_required_fields(self):
         """Verify all modules have non-empty required fields."""
         for module in AVAILABLE_MODULES:
-            assert module.name, f"Module missing name"
+            assert module.name, "Module missing name"
             assert module.display_name, f"Module {module.name} missing display_name"
             assert module.description, f"Module {module.name} missing description"
             assert module.var_name, f"Module {module.name} missing var_name"
@@ -65,7 +63,7 @@ class TestModuleRegistryCompleteness:
     def test_each_expected_module_exists_in_registry(self, module_name: str):
         """
         Property test: For any expected module name, it exists in the registry.
-        
+
         **Feature: deployment-wizard, Property: Module registry contains exactly 8 expected modules**
         **Validates: Requirements 2.5**
         """
@@ -79,7 +77,7 @@ class TestModuleRegistryCompleteness:
     def test_each_registry_module_is_expected(self, module: ModuleInfo):
         """
         Property test: For any module in the registry, it is in the expected set.
-        
+
         **Feature: deployment-wizard, Property: Module registry contains exactly 8 expected modules**
         **Validates: Requirements 2.5**
         """

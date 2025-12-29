@@ -1,0 +1,4 @@
+# file: /Users/jeremyredmond/Code/aws-security-baseline/wizard/validators.py
+# hypothesis_version: 6.148.8
+
+['^[a-zA-Z0-9-]+$']

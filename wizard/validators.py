@@ -21,16 +21,16 @@ ENVIRONMENT_PATTERN = re.compile(r"^[a-zA-Z0-9-]+$")
 
 def validate_region(region: str) -> bool:
     """Validate that a string is a valid AWS region format.
-    
+
     AWS regions follow the pattern: <area>-<location>-<number>
     Examples: us-east-1, eu-west-2, ap-southeast-1
-    
+
     Args:
         region: The region string to validate
-        
+
     Returns:
         True if the region matches the AWS region pattern, False otherwise
-        
+
     **Validates: Requirements 3.2, 3.3**
     """
     if not region or not isinstance(region, str):
@@ -40,16 +40,16 @@ def validate_region(region: str) -> bool:
 
 def validate_environment(env: str) -> bool:
     """Validate that an environment name contains only valid characters.
-    
+
     Valid environment names contain only alphanumeric characters and hyphens.
     Examples: dev, staging, prod, my-env-1
-    
+
     Args:
         env: The environment name to validate
-        
+
     Returns:
         True if the environment name is valid, False otherwise
-        
+
     **Validates: Requirements 4.2**
     """
     if not env or not isinstance(env, str):
@@ -59,15 +59,15 @@ def validate_environment(env: str) -> bool:
 
 def validate_tag_key(key: str) -> bool:
     """Validate that a tag key is not empty.
-    
+
     Tag keys must be non-empty strings.
-    
+
     Args:
         key: The tag key to validate
-        
+
     Returns:
         True if the tag key is non-empty, False otherwise
-        
+
     **Validates: Requirements 5.2**
     """
     if not isinstance(key, str):

@@ -1,6 +1,9 @@
 # AWS Security Baseline Deployment Wizard
 
-A Python CLI wizard for configuring and deploying the AWS Security Baseline Terraform modules. The wizard provides an interactive experience for selecting security services, configuring AWS settings, and generating Terraform configuration files.
+A Python CLI wizard for configuring and deploying the AWS Security Baseline
+Terraform modules. The wizard provides an interactive experience for selecting
+security services, configuring AWS settings, and generating Terraform
+configuration files.
 
 ## Features
 
@@ -26,6 +29,7 @@ pip install -r requirements.txt
 ```
 
 The wizard requires the following Python packages:
+
 - `rich>=13.0.0` - Terminal formatting and interactive prompts
 - `hypothesis>=6.0.0` - Property-based testing (development only)
 - `pytest>=7.0.0` - Test framework (development only)
@@ -41,6 +45,7 @@ python wizard.py
 ```
 
 The wizard will guide you through:
+
 1. **Module Selection** - Choose which AWS security services to enable
 2. **Region Configuration** - Select the AWS region for deployment
 3. **Environment Configuration** - Set the environment name (dev, staging, prod)
@@ -59,7 +64,8 @@ python wizard.py --all-modules
 python wizard.py --all-modules --region us-west-2 --env production
 
 # Add custom tags
-python wizard.py --all-modules --region eu-west-1 --env staging --tag Project=Security --tag Team=DevOps
+python wizard.py --all-modules --region eu-west-1 --env staging \
+  --tag Project=Security --tag Team=DevOps
 
 # View help
 python wizard.py --help
@@ -67,28 +73,28 @@ python wizard.py --help
 
 ### Command-Line Options
 
-| Option | Description | Example |
-|--------|-------------|---------|
-| `--all-modules` | Enable all 8 security modules | `--all-modules` |
-| `--region REGION` | AWS region for deployment (default: us-east-1) | `--region eu-west-1` |
-| `--env ENV` | Environment name (alphanumeric and hyphens only) | `--env production` |
-| `--tag KEY=VALUE` | Add a resource tag (can be used multiple times) | `--tag Project=MyApp` |
-| `--help` | Display usage information | `--help` |
+| Option            | Description                     | Example               |
+| ----------------- | ------------------------------- | --------------------- |
+| `--all-modules`   | Enable all 8 security modules   | `--all-modules`       |
+| `--region REGION` | AWS region (default: us-east-1) | `--region eu-west-1`  |
+| `--env ENV`       | Environment name                | `--env production`    |
+| `--tag KEY=VALUE` | Add a resource tag              | `--tag Project=MyApp` |
+| `--help`          | Display usage information       | `--help`              |
 
 ## Available Security Modules
 
 The wizard supports configuration of the following AWS security services:
 
-| Module | Description |
-|--------|-------------|
-| CloudTrail | API logging and audit trail |
-| AWS Config | Configuration change tracking |
-| GuardDuty | Threat detection service |
-| Detective | Security investigation |
-| Security Hub | Central security dashboard |
-| IAM Access Analyzer | External access analysis |
-| Inspector | Vulnerability scanning |
-| Macie | Sensitive data discovery |
+| Module              | Description                   |
+| ------------------- | ----------------------------- |
+| CloudTrail          | API logging and audit trail   |
+| AWS Config          | Configuration change tracking |
+| GuardDuty           | Threat detection service      |
+| Detective           | Security investigation        |
+| Security Hub        | Central security dashboard    |
+| IAM Access Analyzer | External access analysis      |
+| Inspector           | Vulnerability scanning        |
+| Macie               | Sensitive data discovery      |
 
 ## Example Commands
 
@@ -139,7 +145,8 @@ python wizard.py \
 
 ## Output
 
-The wizard generates a `terraform.tfvars` file in the project root with your configuration:
+The wizard generates a `terraform.tfvars` file in the project root with your
+configuration:
 
 ```hcl
 # AWS Security Baseline Configuration
@@ -173,30 +180,34 @@ tags = {
 
 After running the wizard, deploy the infrastructure:
 
-1. **Configure AWS Credentials**
-   ```bash
-   # Option 1: AWS CLI
-   aws configure
-   
-   # Option 2: Environment variables
-   export AWS_ACCESS_KEY_ID="your-access-key"
-   export AWS_SECRET_ACCESS_KEY="your-secret-key"
-   ```
+### Step 1: Configure AWS Credentials
 
-2. **Initialize Terraform**
-   ```bash
-   terraform init
-   ```
+```bash
+# Option 1: AWS CLI
+aws configure
 
-3. **Preview Changes**
-   ```bash
-   terraform plan
-   ```
+# Option 2: Environment variables
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+```
 
-4. **Apply Configuration**
-   ```bash
-   terraform apply
-   ```
+### Step 2: Initialize Terraform
+
+```bash
+terraform init
+```
+
+### Step 3: Preview Changes
+
+```bash
+terraform plan
+```
+
+### Step 4: Apply Configuration
+
+```bash
+terraform apply
+```
 
 ## Validation
 
@@ -212,10 +223,10 @@ Invalid inputs will display an error message and prompt for correction.
 
 The wizard automatically includes these tags on all resources:
 
-| Tag | Value |
-|-----|-------|
+| Tag           | Value                           |
+| ------------- | ------------------------------- |
 | `Environment` | Your specified environment name |
-| `ManagedBy` | `Terraform` |
+| `ManagedBy`   | `Terraform`                     |
 
 Additional custom tags can be added during configuration.
 
@@ -223,34 +234,36 @@ Additional custom tags can be added during configuration.
 
 ### Missing Dependencies
 
-```
+```text
 Required package 'rich' not found. Install with: pip install rich
 ```
 
 **Solution**: Install the required packages:
+
 ```bash
 pip install -r wizard/requirements.txt
 ```
 
 ### Invalid Region Format
 
-```
+```text
 Invalid region format: 'invalid'. Expected format: us-east-1
 ```
 
-**Solution**: Use a valid AWS region code (e.g., `us-east-1`, `eu-west-1`, `ap-southeast-1`)
+**Solution**: Use a valid AWS region code (e.g., `us-east-1`, `eu-west-1`)
 
 ### Invalid Environment Name
 
-```
+```text
 Invalid environment name: 'my env'. Use only letters, numbers, and hyphens.
 ```
 
-**Solution**: Use only alphanumeric characters and hyphens (e.g., `dev`, `staging`, `prod-us`)
+**Solution**: Use only alphanumeric characters and hyphens (e.g., `dev`,
+`staging`, `prod-us`)
 
 ### File Permission Error
 
-```
+```text
 Failed to write terraform.tfvars: Permission denied
 ```
 
@@ -267,7 +280,7 @@ pytest -v
 
 ### Project Structure
 
-```
+```text
 wizard/
 ├── __init__.py       # Package initialization
 ├── cli.py            # Command-line argument parsing
@@ -284,5 +297,7 @@ wizard/
 
 ## Links
 
-- **Repository**: https://github.com/jsredmond/aws-security-baseline
-- **Issues**: https://github.com/jsredmond/aws-security-baseline/issues
+- **Repository**:
+  [aws-security-baseline](https://github.com/jsredmond/aws-security-baseline)
+- **Issues**:
+  [Report an issue](https://github.com/jsredmond/aws-security-baseline/issues)

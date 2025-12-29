@@ -7,7 +7,6 @@ Property-based tests for wizard validation functions.
 """
 
 import re
-import pytest
 from hypothesis import given, settings, assume
 from hypothesis import strategies as st
 
@@ -15,8 +14,6 @@ from wizard.validators import (
     validate_region,
     validate_environment,
     validate_tag_key,
-    AWS_REGION_PATTERN,
-    ENVIRONMENT_PATTERN,
 )
 
 
@@ -29,26 +26,32 @@ invalid_region_strategy = st.one_of(
     st.just(""),
     st.just("US-EAST-1"),  # uppercase
     st.just("us_east_1"),  # underscores
-    st.just("useast1"),    # no hyphens
-    st.just("us-east"),    # missing number
+    st.just("useast1"),  # no hyphens
+    st.just("us-east"),  # missing number
 )
 
 # Strategy for generating valid environment strings
-valid_environment_strategy = st.from_regex(r"^[a-zA-Z0-9-]+$", fullmatch=True).filter(lambda x: len(x) > 0)
+valid_environment_strategy = st.from_regex(r"^[a-zA-Z0-9-]+$", fullmatch=True).filter(
+    lambda x: len(x) > 0
+)
 
 # Strategy for generating invalid environment strings
 invalid_environment_strategy = st.one_of(
     st.just(""),
-    st.text(alphabet=st.characters(blacklist_categories=('L', 'N'), blacklist_characters='-')).filter(lambda x: len(x) > 0),
-    st.just("dev@prod"),   # special character
-    st.just("my_env"),     # underscore
-    st.just("env name"),   # space
+    st.text(
+        alphabet=st.characters(
+            blacklist_categories=("L", "N"), blacklist_characters="-"
+        )
+    ).filter(lambda x: len(x) > 0),
+    st.just("dev@prod"),  # special character
+    st.just("my_env"),  # underscore
+    st.just("env name"),  # space
 )
 
 
 class TestRegionValidation:
     """Property tests for region validation.
-    
+
     **Feature: deployment-wizard, Property 2: Region Validation**
     **Validates: Requirements 3.2, 3.3**
     """
@@ -58,7 +61,7 @@ class TestRegionValidation:
     def test_valid_regions_pass_validation(self, region: str):
         """
         Property test: For any string matching AWS region pattern, validation passes.
-        
+
         **Feature: deployment-wizard, Property 2: Region Validation**
         **Validates: Requirements 3.2, 3.3**
         """
@@ -71,7 +74,7 @@ class TestRegionValidation:
     def test_invalid_regions_fail_validation(self, region: str):
         """
         Property test: For any string NOT matching AWS region pattern, validation fails.
-        
+
         **Feature: deployment-wizard, Property 2: Region Validation**
         **Validates: Requirements 3.2, 3.3**
         """
@@ -96,27 +99,31 @@ class TestRegionValidation:
             "sa-east-1",
         ]
         for region in valid_regions:
-            assert validate_region(region) is True, f"Known region '{region}' should be valid"
+            assert validate_region(region) is True, (
+                f"Known region '{region}' should be valid"
+            )
 
     def test_known_invalid_regions(self):
         """Test validation with known invalid region formats."""
         invalid_regions = [
             "",
-            "US-EAST-1",      # uppercase
-            "us_east_1",      # underscores
-            "useast1",        # no hyphens
-            "us-east",        # missing number
-            "1-us-east",      # wrong order
-            "us-east-1-a",    # extra suffix
+            "US-EAST-1",  # uppercase
+            "us_east_1",  # underscores
+            "useast1",  # no hyphens
+            "us-east",  # missing number
+            "1-us-east",  # wrong order
+            "us-east-1-a",  # extra suffix
             None,
         ]
         for region in invalid_regions:
-            assert validate_region(region) is False, f"Invalid region '{region}' should fail"
+            assert validate_region(region) is False, (
+                f"Invalid region '{region}' should fail"
+            )
 
 
 class TestEnvironmentValidation:
     """Property tests for environment validation.
-    
+
     **Feature: deployment-wizard, Property 3: Environment Validation**
     **Validates: Requirements 4.2**
     """
@@ -126,7 +133,7 @@ class TestEnvironmentValidation:
     def test_valid_environments_pass_validation(self, env: str):
         """
         Property test: For any string with only alphanumeric chars and hyphens, validation passes.
-        
+
         **Feature: deployment-wizard, Property 3: Environment Validation**
         **Validates: Requirements 4.2**
         """
@@ -139,7 +146,7 @@ class TestEnvironmentValidation:
     def test_invalid_environments_fail_validation(self, env: str):
         """
         Property test: For any string with invalid characters, validation fails.
-        
+
         **Feature: deployment-wizard, Property 3: Environment Validation**
         **Validates: Requirements 4.2**
         """
@@ -162,26 +169,30 @@ class TestEnvironmentValidation:
             "test-env-123",
         ]
         for env in valid_envs:
-            assert validate_environment(env) is True, f"Known environment '{env}' should be valid"
+            assert validate_environment(env) is True, (
+                f"Known environment '{env}' should be valid"
+            )
 
     def test_known_invalid_environments(self):
         """Test validation with known invalid environment names."""
         invalid_envs = [
             "",
-            "my_env",         # underscore
-            "my env",         # space
-            "dev@prod",       # special character
-            "env.name",       # dot
-            "env/name",       # slash
+            "my_env",  # underscore
+            "my env",  # space
+            "dev@prod",  # special character
+            "env.name",  # dot
+            "env/name",  # slash
             None,
         ]
         for env in invalid_envs:
-            assert validate_environment(env) is False, f"Invalid environment '{env}' should fail"
+            assert validate_environment(env) is False, (
+                f"Invalid environment '{env}' should fail"
+            )
 
 
 class TestTagKeyValidation:
     """Tests for tag key validation.
-    
+
     **Validates: Requirements 5.2**
     """
 
@@ -190,7 +201,7 @@ class TestTagKeyValidation:
     def test_non_empty_tag_keys_pass_validation(self, key: str):
         """
         Property test: For any non-empty string (after stripping), validation passes.
-        
+
         **Validates: Requirements 5.2**
         """
         assert validate_tag_key(key) is True, (

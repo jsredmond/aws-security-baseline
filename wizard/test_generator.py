@@ -9,8 +9,7 @@ import os
 import tempfile
 from io import StringIO
 
-import pytest
-from hypothesis import given, settings, assume
+from hypothesis import given, settings
 from hypothesis import strategies as st
 from rich.console import Console
 
@@ -42,17 +41,12 @@ tag_key_strategy = st.from_regex(r"[a-zA-Z][a-zA-Z0-9_]*", fullmatch=True).filte
 
 # Strategy for generating valid tag values (no newlines or unescaped quotes)
 tag_value_strategy = st.text(
-    alphabet=st.characters(blacklist_characters='\n\r'),
-    min_size=0,
-    max_size=50
+    alphabet=st.characters(blacklist_characters="\n\r"), min_size=0, max_size=50
 )
 
 # Strategy for generating valid tags dictionary
 tags_strategy = st.dictionaries(
-    keys=tag_key_strategy,
-    values=tag_value_strategy,
-    min_size=1,
-    max_size=5
+    keys=tag_key_strategy, values=tag_value_strategy, min_size=1, max_size=5
 )
 
 # Strategy for generating valid WizardConfig
@@ -61,13 +55,13 @@ wizard_config_strategy = st.builds(
     modules=module_selection_strategy,
     region=region_strategy,
     environment=environment_strategy,
-    tags=tags_strategy
+    tags=tags_strategy,
 )
 
 
 class TestTfvarsRoundTrip:
     """Property tests for tfvars generation round-trip.
-    
+
     **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
     **Validates: Requirements 7.1, 7.2, 7.3**
     """
@@ -78,13 +72,13 @@ class TestTfvarsRoundTrip:
         """
         Property test: For any valid WizardConfig, generating and parsing
         preserves the region value.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.1, 7.2, 7.3**
         """
         content = generate_tfvars_content(config)
         parsed = parse_tfvars_content(content)
-        
+
         assert parsed.region == config.region, (
             f"Region should be preserved: expected '{config.region}', got '{parsed.region}'"
         )
@@ -95,13 +89,13 @@ class TestTfvarsRoundTrip:
         """
         Property test: For any valid WizardConfig, generating and parsing
         preserves the environment value.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.1, 7.2, 7.3**
         """
         content = generate_tfvars_content(config)
         parsed = parse_tfvars_content(content)
-        
+
         assert parsed.environment == config.environment, (
             f"Environment should be preserved: expected '{config.environment}', got '{parsed.environment}'"
         )
@@ -112,13 +106,13 @@ class TestTfvarsRoundTrip:
         """
         Property test: For any valid WizardConfig, generating and parsing
         preserves all module enabled/disabled states.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.1, 7.2, 7.3**
         """
         content = generate_tfvars_content(config)
         parsed = parse_tfvars_content(content)
-        
+
         for module_name in EXPECTED_MODULE_NAMES:
             expected = config.modules.get(module_name, False)
             actual = parsed.modules.get(module_name, False)
@@ -132,13 +126,13 @@ class TestTfvarsRoundTrip:
         """
         Property test: For any valid WizardConfig, generating and parsing
         preserves all tags exactly.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.1, 7.2, 7.3**
         """
         content = generate_tfvars_content(config)
         parsed = parse_tfvars_content(content)
-        
+
         assert parsed.tags == config.tags, (
             f"Tags should be preserved: expected {config.tags}, got {parsed.tags}"
         )
@@ -148,12 +142,12 @@ class TestTfvarsRoundTrip:
     def test_enabled_modules_have_true_in_output(self, config: WizardConfig):
         """
         Property test: For any enabled module, the output contains 'enable_X = true'.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.2**
         """
         content = generate_tfvars_content(config)
-        
+
         for module in AVAILABLE_MODULES:
             if config.modules.get(module.name, False):
                 expected_line = f"{module.var_name} = true"
@@ -166,12 +160,12 @@ class TestTfvarsRoundTrip:
     def test_disabled_modules_have_false_in_output(self, config: WizardConfig):
         """
         Property test: For any disabled module, the output contains 'enable_X = false'.
-        
+
         **Feature: deployment-wizard, Property 6: tfvars Generation Round-Trip**
         **Validates: Requirements 7.2**
         """
         content = generate_tfvars_content(config)
-        
+
         for module in AVAILABLE_MODULES:
             if not config.modules.get(module.name, False):
                 expected_line = f"{module.var_name} = false"
@@ -182,39 +176,39 @@ class TestTfvarsRoundTrip:
 
 class TestTfvarsGeneration:
     """Unit tests for tfvars file generation.
-    
+
     **Validates: Requirements 7.1, 7.4**
     """
 
     def test_generate_tfvars_creates_file(self):
         """Test that generate_tfvars creates a file successfully.
-        
+
         **Validates: Requirements 7.1, 7.4**
         """
         config = WizardConfig(
             modules={name: True for name in EXPECTED_MODULE_NAMES},
             region="us-east-1",
             environment="test",
-            tags={"Environment": "test", "ManagedBy": "Terraform"}
+            tags={"Environment": "test", "ManagedBy": "Terraform"},
         )
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.tfvars', delete=False) as f:
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".tfvars", delete=False) as f:
             temp_path = f.name
-        
+
         try:
             # Remove the file so we can test creation
             os.unlink(temp_path)
-            
+
             console = Console(file=StringIO(), force_terminal=True)
             result = generate_tfvars(config, temp_path, console, force_overwrite=True)
-            
+
             assert result is True, "generate_tfvars should return True on success"
             assert os.path.exists(temp_path), "File should be created"
-            
+
             # Verify content
-            with open(temp_path, 'r') as f:
+            with open(temp_path, "r") as f:
                 content = f.read()
-            
+
             assert 'environment = "test"' in content
             assert 'aws_region  = "us-east-1"' in content
         finally:
@@ -223,24 +217,24 @@ class TestTfvarsGeneration:
 
     def test_generate_tfvars_displays_path(self):
         """Test that generate_tfvars displays the output path.
-        
+
         **Validates: Requirements 7.4**
         """
         config = WizardConfig(
             modules={name: False for name in EXPECTED_MODULE_NAMES},
             region="eu-west-1",
             environment="prod",
-            tags={"Environment": "prod"}
+            tags={"Environment": "prod"},
         )
-        
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.tfvars', delete=False) as f:
+
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".tfvars", delete=False) as f:
             temp_path = f.name
-        
+
         try:
             output = StringIO()
             console = Console(file=output, force_terminal=True)
             result = generate_tfvars(config, temp_path, console, force_overwrite=True)
-            
+
             assert result is True
             printed_output = output.getvalue()
             assert temp_path in printed_output or "Generated" in printed_output
@@ -250,43 +244,50 @@ class TestTfvarsGeneration:
 
     def test_generated_content_has_valid_hcl_syntax(self):
         """Test that generated content uses valid HCL syntax.
-        
+
         **Validates: Requirements 7.2**
         """
         config = WizardConfig(
-            modules={"cloudtrail": True, "config": False, "guardduty": True,
-                     "detective": False, "securityhub": True, "accessanalyzer": False,
-                     "inspector": True, "macie": False},
+            modules={
+                "cloudtrail": True,
+                "config": False,
+                "guardduty": True,
+                "detective": False,
+                "securityhub": True,
+                "accessanalyzer": False,
+                "inspector": True,
+                "macie": False,
+            },
             region="ap-southeast-1",
             environment="staging",
-            tags={"Environment": "staging", "Team": "Security"}
+            tags={"Environment": "staging", "Team": "Security"},
         )
-        
+
         content = generate_tfvars_content(config)
-        
+
         # Check HCL syntax patterns
         assert 'environment = "staging"' in content, "String values should be quoted"
         assert 'aws_region  = "ap-southeast-1"' in content, "Region should be quoted"
-        assert 'enable_cloudtrail = true' in content, "Boolean true should be lowercase"
-        assert 'enable_config = false' in content, "Boolean false should be lowercase"
-        assert 'common_tags = {' in content, "Tags block should use HCL map syntax"
-        assert '}' in content, "Tags block should be closed"
+        assert "enable_cloudtrail = true" in content, "Boolean true should be lowercase"
+        assert "enable_config = false" in content, "Boolean false should be lowercase"
+        assert "common_tags = {" in content, "Tags block should use HCL map syntax"
+        assert "}" in content, "Tags block should be closed"
 
     def test_tags_with_special_characters(self):
         """Test that tags with special characters are properly escaped.
-        
+
         **Validates: Requirements 7.2**
         """
         config = WizardConfig(
             modules={name: True for name in EXPECTED_MODULE_NAMES},
             region="us-east-1",
             environment="test",
-            tags={"Description": 'Value with "quotes"', "Normal": "simple"}
+            tags={"Description": 'Value with "quotes"', "Normal": "simple"},
         )
-        
+
         content = generate_tfvars_content(config)
         parsed = parse_tfvars_content(content)
-        
+
         # The quotes should be escaped and then unescaped correctly
         assert parsed.tags["Description"] == 'Value with "quotes"'
         assert parsed.tags["Normal"] == "simple"

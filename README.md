@@ -28,16 +28,16 @@ AWS Security Baseline provides a modular, production-ready Terraform implementat
 
 ### Security Services
 
-| Service | Description | Module |
-|---------|-------------|--------|
-| **CloudTrail** | Centralized API logging with KMS encryption | [modules/cloudtrail](./modules/cloudtrail) |
-| **AWS Config** | Configuration change tracking & compliance | [modules/config](./modules/config) |
-| **GuardDuty** | Intelligent threat detection | [modules/guardduty](./modules/guardduty) |
-| **Detective** | Visual security investigation | [modules/detective](./modules/detective) |
-| **Security Hub** | Central security findings dashboard | [modules/securityhub](./modules/securityhub) |
-| **Access Analyzer** | IAM policy & resource access analysis | [modules/accessanalyzer](./modules/accessanalyzer) |
-| **Inspector** | Automated vulnerability scanning | [modules/inspector](./modules/inspector) |
-| **Macie** | Sensitive data discovery | [modules/macie](./modules/macie) |
+| Service             | Description                                 | Module                                             |
+| ------------------- | ------------------------------------------- | -------------------------------------------------- |
+| **CloudTrail**      | Centralized API logging with KMS encryption | [modules/cloudtrail](./modules/cloudtrail)         |
+| **AWS Config**      | Configuration change tracking & compliance  | [modules/config](./modules/config)                 |
+| **GuardDuty**       | Intelligent threat detection                | [modules/guardduty](./modules/guardduty)           |
+| **Detective**       | Visual security investigation               | [modules/detective](./modules/detective)           |
+| **Security Hub**    | Central security findings dashboard         | [modules/securityhub](./modules/securityhub)       |
+| **Access Analyzer** | IAM policy & resource access analysis       | [modules/accessanalyzer](./modules/accessanalyzer) |
+| **Inspector**       | Automated vulnerability scanning            | [modules/inspector](./modules/inspector)           |
+| **Macie**           | Sensitive data discovery                    | [modules/macie](./modules/macie)                   |
 
 <hr>
 
@@ -128,16 +128,16 @@ common_tags = {
 
 ### Input Variables
 
-| Variable | Description | Type | Default |
-|----------|-------------|------|---------|
-| `environment` | Environment name (dev/staging/prod) | string | **required** |
-| `aws_region` | AWS region for deployment | string | `us-east-1` |
-| `enable_cloudtrail` | Enable CloudTrail module | bool | `true` |
-| `enable_config` | Enable AWS Config module | bool | `true` |
-| `enable_guardduty` | Enable GuardDuty module | bool | `true` |
-| `enable_detective` | Enable Detective module | bool | `true` |
-| `enable_securityhub` | Enable Security Hub module | bool | `true` |
-| `common_tags` | Common tags for all resources | map | `{}` |
+| Variable             | Description                         | Type   | Default      |
+| -------------------- | ----------------------------------- | ------ | ------------ |
+| `environment`        | Environment name (dev/staging/prod) | string | **required** |
+| `aws_region`         | AWS region for deployment           | string | `us-east-1`  |
+| `enable_cloudtrail`  | Enable CloudTrail module            | bool   | `true`       |
+| `enable_config`      | Enable AWS Config module            | bool   | `true`       |
+| `enable_guardduty`   | Enable GuardDuty module             | bool   | `true`       |
+| `enable_detective`   | Enable Detective module             | bool   | `true`       |
+| `enable_securityhub` | Enable Security Hub module          | bool   | `true`       |
+| `common_tags`        | Common tags for all resources       | map    | `{}`         |
 
 <hr>
 
@@ -194,12 +194,12 @@ See [DEPLOYMENT_TEST.md](./DEPLOYMENT_TEST.md) for detailed backend setup instru
 
 ### CI/CD Pipeline
 
-| Tool | Purpose |
-|------|---------|
+| Tool             | Purpose                                            |
+| ---------------- | -------------------------------------------------- |
 | **Super-Linter** | Multi-language linting (Terraform, YAML, Markdown) |
-| **Checkov** | Infrastructure security scanning |
-| **TFLint** | Terraform-specific linting |
-| **Dependabot** | Dependency vulnerability scanning |
+| **Checkov**      | Infrastructure security scanning                   |
+| **TFLint**       | Terraform-specific linting                         |
+| **Dependabot**   | Dependency vulnerability scanning                  |
 
 ### Local Testing
 

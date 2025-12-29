@@ -15,8 +15,8 @@
 <p align="center">
   <a href="https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml"><img alt="Super-Linter" src="https://github.com/jsredmond/aws-security-baseline/actions/workflows/super-linter.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
-  <a href="https://www.terraform.io/"><img alt="Terraform" src="https://img.shields.io/badge/Terraform-%3E%3D1.14-blueviolet"></a>
-  <a href="https://registry.terraform.io/providers/hashicorp/aws/latest"><img alt="AWS Provider" src="https://img.shields.io/badge/AWS_Provider-%3E%3D6.24-orange"></a>
+  <a href="https://www.terraform.io/"><img alt="Terraform" src="https://img.shields.io/badge/Terraform-%3E%3D1.14.3-blueviolet"></a>
+  <a href="https://registry.terraform.io/providers/hashicorp/aws/latest"><img alt="AWS Provider" src="https://img.shields.io/badge/AWS_Provider-%3E%3D6.27-orange"></a>
 </p>
 
 <p align="center">
@@ -88,7 +88,7 @@ terraform apply
 **Requirements**
 
 - Python 3.9+
-- Terraform >= 1.14.0
+- Terraform >= 1.14.3
 - AWS CLI configured
 
 **Commands**
@@ -110,7 +110,7 @@ python wizard.py --all-modules --region us-east-1 --env production
 
 **Requirements**
 
-- Terraform >= 1.14.0
+- Terraform >= 1.14.3
 - AWS CLI configured with appropriate permissions
 
 **Commands**

@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Snyk Security Scan",
+  "description": "Run comprehensive Snyk security scans including SCA (dependency vulnerabilities) and SAST (code security issues), then summarize findings with remediation steps",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run a comprehensive security scan on this project:\n\n1. Run Snyk SCA scan on the project to check dependencies for known vulnerabilities:\n   - Use snyk_sca_scan with the project path \".\"\n   - Report any high or critical vulnerabilities found\n\n2. Run Snyk Code scan (SAST) to analyze source code for security issues:\n   - Use snyk_code_scan on the project\n   - Focus on high and medium severity issues\n\n3. Summarize findings:\n   - List any vulnerable packages with their severity and fix recommendations\n   - List any code security issues found\n   - Provide actionable remediation steps\n\nIf vulnerabilities are found, suggest specific version upgrades or code fixes to resolve them."
+  }
+}

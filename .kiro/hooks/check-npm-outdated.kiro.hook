@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Check Outdated Dependencies",
+  "description": "Runs npm outdated to check for outdated dependencies and provides a summary highlighting major version updates, security-related packages, and prioritized recommendations.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Run `npm outdated` to check for outdated dependencies. After getting the results, provide a comprehensive summary that includes: 1) A list of all outdated packages with their current, wanted, and latest versions, 2) Highlight any packages with MAJOR version updates available (these may have breaking changes), 3) Identify and prioritize any security-related packages (like those containing 'security', 'auth', 'crypto', 'helmet', 'cors', 'sanitize', 'validator', 'jwt', 'passport', etc.), 4) Provide a brief recommendation on which updates to consider first based on security importance and breaking change risk."
+  }
+}
